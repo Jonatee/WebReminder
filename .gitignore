@@ -1,0 +1,6 @@
+appsettings.json
+appsettings.*.json
+/.vs/WebReminder
+/obj
+/bin/Debug/net9.0
+/.vs/ProjectEvaluation
