@@ -4,12 +4,14 @@ namespace WebReminder.Services.Interfaces
 {
     public interface IReminderService
     {
-        Task<ReminderResponseModel> CreateReminder(ReminderRequestModel request);
-        Task<ReminderResponseModel> UpdateReminder(ReminderRequestModel request);
+        Task<BaseResponse<ReminderResponseModel>> CreateReminder(ReminderRequestModel request);
+        Task<BaseResponse<ReminderResponseModel>> UpdateReminder(ReminderUpdateModel request);
         Task DeleteReminder(ReminderRequestModel request);
-        Task<ReminderResponseModel> GetReminders(ReminderRequestModel request);
-        Task<ReminderResponseModel> RestoreReminder(ReminderRequestModel request);
-        Task<IEnumerable<ReminderResponseModel>> GetAllReminders();
+        Task<BaseResponse<ReminderResponseModel>> GetReminders(ReminderRequestModel request);
+        Task<BaseResponse<ReminderResponseModel>> RestoreReminder(ReminderRequestModel request);
+        Task<BaseResponse<IEnumerable<ReminderResponseModel>>> GetAllReminders();
+        Task<IEnumerable<ReminderResponseModel>> GetAllDueReminders();
+        Task<bool> SendReminderAsync(ReminderEmailRequestModel request);
         Task<IEnumerable<ReminderResponseModel>> BulkCreate(List<ReminderRequestModel> reminderRequests);
 
     }

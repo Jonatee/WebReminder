@@ -1,13 +1,17 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using WebReminder.Context;
-
+using Resend;
+using WebReminder.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<ReminderDb>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Supabase")));
+builder.Services.AddDbContext<ReminderDb>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("MigrationConnection")));
+builder.Services.AddRepositories();
+builder.Services.AddServices();
 builder.Services.AddSession();
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -22,6 +26,15 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.SlidingExpiration = true;
     });
 builder.Services.AddMemoryCache();
+builder.Services.AddOptions();
+builder.Services.AddHttpClient<ResendClient>();
+builder.Services.Configure<ResendClientOptions>(o =>
+{
+    var apiToken = builder.Configuration["Resend:ApiToken"];
+
+    o.ApiToken = apiToken!;
+});
+builder.Services.AddTransient<IResend, ResendClient>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

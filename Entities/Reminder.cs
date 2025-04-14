@@ -7,6 +7,7 @@
         public string Description { get; set; } = default!;
         public DateTime DueDate { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.Now;
+        public bool IsSent { get; set; }
         public bool IsDeleted { get; set; } 
         public string ImageUrl { get; set; }
         public DateTime LastModified { get;set; }
