@@ -1,0 +1,79 @@
+﻿@using WebReminder.Models.DTOs
+@model BaseResponse<IEnumerable<ReminderResponseModel>>
+<link rel="stylesheet" href="~/css/reminder.css" />
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<div class="dashboard-container">
+    <div class="content-container">
+        <div class="dashboard-header">
+            <h1>My Reminders</h1>
+            <div class="dashboard-actions">
+                <div class="search-container">
+                    <input type="text" placeholder="Search reminders..." />
+                    <i class="icon-search"></i>
+                </div>
+                <div class="filter-container">
+                    <select>
+                        <option>All</option>
+                        <option>Today</option>
+                        <option>This Week</option>
+                        <option>This Month</option>
+                    </select>
+                </div>
+                <a href="/Reminder/CreateReminder" class="btn-primary">
+                    + New Reminder
+                </a>
+            </div>
+        </div>
+
+        @if (Model == null) 
+        {
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="icon-calendar" aria-hidden="true"></i>
+                </div>
+                <h3>No Reminders Found</h3>
+                <p>You don't have any reminders yet. Create your first reminder to get started.</p>
+                <div class="empty-state-action">
+                    <a href="/Reminder/CreateReminder" class="btn-primary">
+                        <i class="icon-plus"></i> Create Reminder
+                    </a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="reminders-list">
+                @foreach (var reminder in Model.Data!)
+                {
+                    var statusClass = reminder.IsDeleted ? "deleted" :
+                    reminder.DueDate < DateTime.UtcNow ? "completed" :
+                    (reminder.DueDate - DateTime.UtcNow).TotalHours < 24 ? "urgent" :
+                    (reminder.DueDate - DateTime.UtcNow).TotalDays < 7 ? "upcoming" : "normal";
+
+                    <div class="reminder-card @statusClass">
+                        @if (!string.IsNullOrEmpty(reminder.ImageUrl))
+                        {
+                            <img src="@reminder.ImageUrl" class="reminder-image" alt="Reminder Image" />
+                        }
+                        <div class="reminder-content">
+                            <h3>@reminder.Title</h3>
+                            <p>@reminder.Description</p>
+
+                            <span class="reminder-date" data-time="@reminder.DueDate.ToString("h:mm tt")">
+                                Due: @reminder.DueDate.ToString("MMM dd, yyyy")
+                            </span>
+
+                            <span class="reminder-date">
+                                Created: @reminder.DateCreated.ToString("MMM dd, yyyy")
+                            </span>
+                        </div>
+                        <div class="reminder-actions">
+                            <a asp-action="ViewReminder" asp-controller="Reminder" asp-route-id="@reminder.Id" class="btn-action view">View</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

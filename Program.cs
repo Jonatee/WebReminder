@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WebReminder.Context;
 using Resend;
 using WebReminder.Configuration;
+using WebReminder.BackGroundServices;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,14 +12,14 @@ builder.Services.AddDbContext<ReminderDb>(options => options.UseNpgsql(builder.C
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 builder.Services.AddSession();
-
+builder.Services.AddHostedService<DueReminderServices>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.LoginPath = "/Auth/Login";
         options.LogoutPath = "/Auth/Logout";
-        options.AccessDeniedPath = "/Auth/AccessDenied";
+        options.AccessDeniedPath = "/Auth/Login";
         options.Cookie.Name = "WebReminder";
         options.Cookie.HttpOnly = true;
         options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
@@ -27,14 +28,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 builder.Services.AddMemoryCache();
 builder.Services.AddOptions();
-builder.Services.AddHttpClient<ResendClient>();
-builder.Services.Configure<ResendClientOptions>(o =>
-{
-    var apiToken = builder.Configuration["Resend:ApiToken"];
-
-    o.ApiToken = apiToken!;
-});
-builder.Services.AddTransient<IResend, ResendClient>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -49,7 +42,6 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapStaticAssets();
 
 app.MapControllerRoute(

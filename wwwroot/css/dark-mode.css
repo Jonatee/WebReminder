@@ -1,0 +1,113 @@
+﻿/* Dark Mode Styles */
+:root {
+    --dark-bg: #121212;
+    --dark-card-bg: #1e1e1e;
+    --dark-border: #333333;
+    --dark-text: #e0e0e0;
+    --dark-text-secondary: #a0a0a0;
+    --dark-hover: #2a2a2a;
+}
+
+html.dark-mode {
+    color-scheme: dark;
+}
+
+    html.dark-mode body {
+        background-color: var(--dark-bg);
+        color: var(--dark-text);
+    }
+
+    html.dark-mode .site-header {
+        background-color: var(--dark-card-bg);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    html.dark-mode .logo h1 {
+        color: var(--dark-text);
+    }
+
+    html.dark-mode .nav-menu a {
+        color: var(--dark-text-secondary);
+    }
+
+        html.dark-mode .nav-menu a:hover,
+        html.dark-mode .nav-menu a.active {
+            color: var(--purple-400);
+        }
+
+    html.dark-mode .dark-mode-toggle {
+        color: var(--dark-text);
+    }
+
+        html.dark-mode .dark-mode-toggle:hover {
+            background-color: var(--dark-hover);
+        }
+
+    html.dark-mode .mobile-nav-toggle {
+        color: var(--dark-text);
+    }
+
+    html.dark-mode .nav-menu {
+        background-color: var(--dark-card-bg);
+    }
+
+    html.dark-mode .reminder-detail-card,
+    html.dark-mode .reminder-card,
+    html.dark-mode .create-reminder-card {
+        background-color: var(--dark-card-bg);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    html.dark-mode .reminder-header {
+        border-bottom-color: var(--dark-border);
+    }
+
+    html.dark-mode .reminder-title-section h2 {
+        color: var(--dark-text);
+    }
+
+    html.dark-mode .reminder-section h3 {
+        color: var(--dark-text);
+    }
+
+    html.dark-mode .reminder-section p {
+        color: var(--dark-text-secondary);
+    }
+
+    html.dark-mode .reminder-meta-item {
+        color: var(--dark-text-secondary);
+    }
+
+    html.dark-mode .reminder-metadata {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    html.dark-mode .metadata-item h4 {
+        color: var(--dark-text-secondary);
+    }
+
+    html.dark-mode .btn-secondary {
+        background-color: var(--dark-hover);
+        color: var(--dark-text);
+        border-color: var(--dark-border);
+    }
+
+        html.dark-mode .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+    html.dark-mode .back-link {
+        color: var(--dark-text-secondary);
+    }
+
+        html.dark-mode .back-link:hover {
+            color: var(--purple-400);
+        }
+
+    html.dark-mode .view-reminder-container {
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, var(--dark-bg) 100%);
+    }
+
+    html.dark-mode .site-footer {
+        background-color: #000000;
+    }

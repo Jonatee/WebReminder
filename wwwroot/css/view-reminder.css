@@ -1,0 +1,519 @@
+﻿/* Base Styles & Variables */
+:root {
+    /* Color Palette */
+    --color-primary: #910caa;
+    --color-primary-light: #d048df;
+    --color-primary-lighter: #f080ff;
+    --color-primary-dark: #750c91;
+    --color-primary-darker: #4b004b;
+    --color-primary-bg: #fbeaff;
+    --color-accent: #f080ff;
+    --color-text: #3b003b;
+    --color-text-light: #5b5b5b;
+    --color-white: #ffffff;
+    /* Status Colors */
+    --color-success: #16a34a;
+    --color-success-light: #dcfce7;
+    --color-warning: #f59e0b;
+    --color-warning-light: #fef3c7;
+    --color-danger: #dc2626;
+    --color-danger-light: #fee2e2;
+    --color-info: #3b82f6;
+    --color-info-light: #dbeafe;
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(187, 144, 197, 0.15);
+    --shadow-md: 0 4px 12px rgba(187, 144, 197, 0.25);
+    --shadow-lg: 0 8px 24px rgba(187, 144, 197, 0.35);
+    /* Border Radius */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-full: 9999px;
+    /* Spacing */
+    --space-xs: 0.5rem;
+    --space-sm: 0.75rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+}
+
+/* Reset & Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: var(--color-primary-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+/* App Container */
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main Content */
+.site-main {
+    flex: 1;
+    padding: var(--space-xl) 0;
+}
+
+/* View Reminder Container */
+.view-reminder-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+
+/* Content Container */
+.content-container {
+    width: 100%;
+}
+
+/* Page Header */
+.page-header {
+    margin-bottom: var(--space-xl);
+    position: relative;
+}
+
+    .page-header h1 {
+        color: var(--color-primary);
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-top: var(--space-md);
+        letter-spacing: -0.02em;
+        position: relative;
+    }
+
+        .page-header h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
+            border-radius: var(--radius-full);
+        }
+
+/* Back Link */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: var(--space-sm);
+    transition: all 0.2s ease;
+}
+
+    .back-link:hover {
+        color: var(--color-primary-dark);
+        transform: translateX(-4px);
+    }
+
+    .back-link i {
+        margin-right: var(--space-xs);
+        font-size: 1.1rem;
+    }
+
+/* Reminder Detail Card */
+.reminder-detail-card {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    margin-bottom: var(--space-xl);
+    border-top: 5px solid var(--color-primary);
+    position: relative;
+}
+
+/* Reminder Header */
+.reminder-header {
+    padding: var(--space-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    background: linear-gradient(to bottom, rgba(251, 234, 255, 0.5), rgba(255, 255, 255, 0));
+    border-bottom: 1px solid rgba(209, 72, 223, 0.1);
+}
+
+.reminder-title-section {
+    flex: 1;
+    min-width: 200px;
+}
+
+    .reminder-title-section h2 {
+        color: var(--color-primary-dark);
+        font-size: 1.8rem;
+        margin-bottom: var(--space-xs);
+        line-height: 1.3;
+    }
+
+/* Status Badges */
+.reminder-status-badges {
+    display: flex;
+    gap: var(--space-xs);
+    margin-top: var(--space-sm);
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-xs) var(--space-md);
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+    .status-badge.sent {
+        background-color: var(--color-success-light);
+        color: var(--color-success);
+    }
+
+    .status-badge.pending {
+        background-color: var(--color-warning-light);
+        color: var(--color-warning);
+    }
+
+    .status-badge::before {
+        content: "";
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: var(--space-xs);
+    }
+
+    .status-badge.sent::before {
+        background-color: var(--color-success);
+    }
+
+    .status-badge.pending::before {
+        background-color: var(--color-warning);
+    }
+
+/* Reminder Actions */
+.reminder-actions {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+/* Buttons */
+.btn-secondary, .btn-danger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-secondary {
+    background-color: var(--color-primary-bg);
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary-light);
+}
+
+    .btn-secondary:hover {
+        background-color: var(--color-primary-light);
+        color: var(--color-white);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-sm);
+    }
+
+.btn-danger {
+    background-color: var(--color-danger-light);
+    color: var(--color-danger);
+    border: 1px solid rgba(220, 38, 38, 0.3);
+}
+
+    .btn-danger:hover {
+        background-color: var(--color-danger);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-sm);
+    }
+
+/* Reminder Content */
+.reminder-content {
+    padding: var(--space-lg);
+}
+
+/* Reminder Section */
+.reminder-section {
+    margin-bottom: var(--space-xl);
+}
+
+    .reminder-section h3 {
+        color: var(--color-primary);
+        font-size: 1.2rem;
+        margin-bottom: var(--space-sm);
+        position: relative;
+        display: inline-block;
+    }
+
+        .reminder-section h3::after {
+            content: "";
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--color-primary-light), transparent);
+            border-radius: var(--radius-full);
+        }
+
+    .reminder-section p {
+        color: var(--color-text);
+        line-height: 1.7;
+        font-size: 1.05rem;
+    }
+
+/* Enhanced Meta Item Styling */
+.reminder-meta-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    background: linear-gradient(135deg, rgba(145, 12, 170, 0.05), rgba(255, 255, 255, 0.8));
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--color-primary-light);
+    margin-top: var(--space-xs);
+    position: relative;
+    box-shadow: var(--shadow-sm);
+}
+
+    .reminder-meta-item i {
+        color: var(--color-primary);
+        font-size: 1.2rem;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .reminder-meta-item span {
+        font-weight: 500;
+        color: var(--color-text);
+        font-size: 1rem;
+    }
+
+/* Due Date Styling - Special Emphasis */
+.reminder-section:nth-child(2) .reminder-meta-item {
+    background: linear-gradient(135deg, rgba(145, 12, 170, 0.08), rgba(240, 128, 255, 0.08));
+    border-left: 3px solid var(--color-primary);
+    padding: var(--space-md);
+}
+
+    .reminder-section:nth-child(2) .reminder-meta-item span {
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .reminder-section:nth-child(2) .reminder-meta-item::after {
+        content: "Due Date";
+        position: absolute;
+        top: -10px;
+        right: 10px;
+        background: var(--color-primary-light);
+        color: white;
+        padding: 2px 10px;
+        border-radius: var(--radius-full);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+/* Image Section */
+.reminder-image {
+    margin-top: var(--space-sm);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    max-width: 100%;
+}
+
+    .reminder-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+
+    .reminder-image:hover img {
+        transform: scale(1.02);
+    }
+
+    .reminder-image::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
+        z-index: 1;
+    }
+
+/* Metadata Grid */
+.reminder-metadata {
+    background: rgba(251, 234, 255, 0.3);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    border: 1px solid rgba(209, 72, 223, 0.1);
+}
+
+.metadata-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-lg);
+}
+
+.metadata-item h4 {
+    color: var(--color-primary-dark);
+    font-size: 1rem;
+    margin-bottom: var(--space-xs);
+    font-weight: 600;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.reminder-detail-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .site-main {
+        padding: var(--space-lg) 0;
+    }
+
+    .view-reminder-container {
+        padding: 0 var(--space-md);
+    }
+
+    .reminder-header {
+        flex-direction: column;
+    }
+
+    .reminder-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .metadata-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+    }
+
+    .page-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .reminder-title-section h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .site-main {
+        padding: var(--space-md) 0;
+    }
+
+    .view-reminder-container {
+        padding: 0 var(--space-sm);
+    }
+
+    .reminder-header, .reminder-content {
+        padding: var(--space-md);
+    }
+
+    .btn-secondary, .btn-danger {
+        padding: var(--space-xs) var(--space-md);
+        font-size: 0.9rem;
+    }
+
+    .reminder-section h3 {
+        font-size: 1.1rem;
+    }
+
+    .reminder-meta-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+        .reminder-meta-item i {
+            margin-bottom: var(--space-xs);
+        }
+}
+
+/* Dark Mode Support */
+.dark-mode .reminder-detail-card {
+    background: #1f1f1f;
+    border-top-color: var(--color-primary-light);
+}
+
+.dark-mode .reminder-header {
+    background: linear-gradient(to bottom, rgba(145, 12, 170, 0.1), rgba(0, 0, 0, 0));
+    border-bottom-color: rgba(209, 72, 223, 0.2);
+}
+
+.dark-mode .reminder-title-section h2,
+.dark-mode .reminder-section h3,
+.dark-mode .metadata-item h4 {
+    color: var(--color-primary-lighter);
+}
+
+.dark-mode .reminder-meta-item {
+    background: linear-gradient(135deg, rgba(145, 12, 170, 0.15), rgba(30, 30, 30, 0.5));
+}
+
+.dark-mode .reminder-metadata {
+    background: rgba(145, 12, 170, 0.1);
+    border-color: rgba(209, 72, 223, 0.2);
+}
+
+.dark-mode .btn-secondary {
+    background-color: rgba(145, 12, 170, 0.2);
+    border-color: var(--color-primary);
+}
+
+.dark-mode .btn-danger {
+    background-color: rgba(220, 38, 38, 0.2);
+}

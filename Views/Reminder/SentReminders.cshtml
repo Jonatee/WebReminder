@@ -1,0 +1,77 @@
+﻿@model IEnumerable<WebReminder.Models.DTOs.ReminderResponseModel>
+<link href="~/css/sent-reminder.css" rel="stylesheet" />
+<div class="sent-reminders-container">
+    <header class="page-header">
+        <h1>Sent Reminders</h1>
+        @* <p class="info-message"> *@
+        @*     <i class="icon-info"></i> *@
+        @*     These reminders have been successfully sent to your recipients. *@
+        @* </p> *@
+    </header>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <i class="icon-paper-plane empty-icon"></i>
+            <h2>No Sent Reminders</h2>
+            <p>Reminders you've sent will appear here for your reference.</p>
+        </div>
+    }
+    else
+    {
+        <div class="sent-reminders-grid">
+            @foreach (var reminder in Model)
+            {
+                <article class="reminder-card" data-reminder-id="@reminder.Id">
+                    <div class="reminder-badge">
+                        <i class="icon-check"></i>
+                        <span>Sent</span>
+                    </div>
+
+                    <div class="reminder-content">
+                        <h2 class="reminder-title">@reminder.Title</h2>
+                        <p class="reminder-description">@reminder.Description</p>
+
+                        @if (!string.IsNullOrEmpty(reminder.ImageUrl))
+                        {
+                            <div class="reminder-image-container">
+                                <img src="@reminder.ImageUrl" alt="Reminder image" class="reminder-image" />
+                            </div>
+                        }
+
+                        <div class="reminder-meta">
+                            <div class="meta-item sent-date">
+                                <i class="icon-paper-plane" aria-hidden="true"></i>
+                                <span>Sent: <time datetime="@reminder.LastModified.ToString("yyyy-MM-ddTHH:mm")">@reminder.LastModified.ToString("MMM dd, yyyy")</time></span>
+                            </div>
+
+                            <div class="meta-item due-date">
+                                <i class="icon-calendar" aria-hidden="true"></i>
+                                <span>Due: </span>
+                                <time datetime="@reminder.DueDate.ToString("yyyy-MM-ddTHH:mm")" class="date-highlight">
+                                    @reminder.DueDate.ToString("MMM dd, yyyy")
+                                    <span class="time-display">@reminder.DueDate.ToString("hh:mm tt")</span>
+                                </time>
+                            </div>
+
+                            <div class="meta-item created-date">
+                                <i class="icon-clock" aria-hidden="true"></i>
+                                <span>Created: </span>
+                                <time datetime="@reminder.DateCreated.ToString("yyyy-MM-dd")" class="date-highlight created">
+                                    @reminder.DateCreated.ToString("MMM dd, yyyy")
+                                </time>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reminder-footer">
+                        <a href="@Url.Action("ViewReminder", "Reminder", new { id = reminder.Id })" class="view-details">
+                            <i class="icon-eye" aria-hidden="true"></i>
+                            View Details
+                        </a>
+                    </div>
+                </article>
+            }
+        </div>
+    }
+</div>

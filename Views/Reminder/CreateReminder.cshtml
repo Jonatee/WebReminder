@@ -1,0 +1,79 @@
+﻿@model WebReminder.Models.DTOs.ReminderRequestModel
+@{
+    ViewData["Title"] = "Create Reminder";
+}
+<link rel="stylesheet" href="../css/create-reminder.css" />
+<link rel="stylesheet" href="../css/icons.css" />
+
+<div class="create-reminder-container">
+    <div class="content-container">
+        <div class="page-header">
+            <a asp-controller="Reminder" asp-action="AllReminders" class="back-link">
+                <i class="icon-arrow-left"></i> Back to Reminders
+            </a>
+            <h1>Create New Reminder</h1>
+        </div>
+
+        <div class="create-reminder-card">
+            <div class="reminder-form-container">
+                <form asp-action="CreateReminder" asp-controller="Reminder" enctype="multipart/form-data" method="post">
+                    <div class="form-group">
+                        <label asp-for="Title"></label>
+                        <input asp-for="Title" class="form-control" placeholder="Enter reminder title" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Description"></label>
+                        <textarea asp-for="Description" class="form-control" rows="4" placeholder="Enter reminder details"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label asp-for="DueDate">Due Date</label>
+                            <input asp-for="DueDate" type="datetime-local" class="form-control" />
+                            <span asp-validation-for="DueDate" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Image">Image (Optional)</label>
+                        <input asp-for="Image" type="file" class="form-control" accept="image/*" />
+                        <span asp-validation-for="Image" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-actions">
+                        <a asp-action="Index" asp-controller="Reminders" class="btn-secondary">Cancel</a>
+                        <button type="submit" class="btn-primary">Create Reminder</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="reminder-preview">
+                <h3>Preview</h3>
+                <div class="preview-card">
+                    <div class="preview-image">
+                        <img src="/images/reminder-notification.png" alt="Reminder" />
+                    </div>
+                    <div class="preview-content">
+                        <h4 id="preview-title">Reminder Title</h4>
+                        <p id="preview-description">Reminder description will appear here...</p>
+                        <div class="preview-meta">
+                            <div class="preview-date">
+                                <i class="icon-calendar"></i>
+                                <span id="preview-date">Select a due date</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="../js/create-reminder.js"></script>
+    <script src="../js/dark-mode.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+}

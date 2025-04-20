@@ -1,0 +1,67 @@
+﻿@model IEnumerable<WebReminder.Models.DTOs.ReminderResponseModel>
+<link href="~/css/deleted-reminder.css" rel="stylesheet" />
+<div class="deleted-reminders-container">
+    <header class="page-header">
+        <h1>Deleted Reminders</h1>
+        <p class="info-message">
+            <i class="icon-info"></i>
+            Deleted reminders are kept for 30 days before being permanently removed.
+        </p>
+    </header>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <i class="icon-trash empty-icon"></i>
+            <h2>No Deleted Reminders</h2>
+            <p>Items you delete will appear here for 30 days before being permanently removed.</p>
+        </div>
+    }
+    else
+    {
+        <div class="deleted-reminders-grid">
+            @foreach (var reminder in Model)
+            {
+                <article class="reminder-card" data-reminder-id="@reminder.Id">
+                    <div class="reminder-content">
+                        <h2 class="reminder-title">@reminder.Title</h2>
+                        <p class="reminder-description">@reminder.Description</p>
+
+                        <div class="reminder-meta">
+                            <div class="meta-item due-date">
+                                <i class="icon-calendar" aria-hidden="true"></i>
+                                <span>Due: <time datetime="@reminder.DueDate.ToString("yyyy-MM-ddTHH:mm")">@reminder.DueDate.ToString("MMM dd, yyyy hh:mm tt")</time></span>
+                            </div>
+
+                            <div class="meta-item created-date">
+                                <i class="icon-clock" aria-hidden="true"></i>
+                                <span>Created: <time datetime="@reminder.DateCreated.ToString("yyyy-MM-dd")">@reminder.DateCreated.ToString("MMM dd, yyyy")</time></span>
+                            </div>
+
+                            <div class="meta-item deleted-date">
+                                <i class="icon-trash" aria-hidden="true"></i>
+                                <span>Deleted: <time datetime="@reminder.LastModified.ToString("yyyy-MM-dd")">@reminder.LastModified.ToString("MMM dd, yyyy")</time></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reminder-actions">
+                        <form asp-action="RestoreReminder" asp-route-id="@reminder.Id" method="post" class="action-form">
+                            <button type="submit" class="btn-action restore" title="Restore reminder">
+                                <i class="icon-refresh" aria-hidden="true"></i>
+                                <span>Restore</span>
+                            </button>
+                        </form>
+
+                        <form asp-action="DeletePermanently" asp-route-id="@reminder.Id" method="post" class="action-form">
+                            <button type="submit" class="btn-action delete" title="Delete forever">
+                                <i class="icon-x" aria-hidden="true"></i>
+                                <span>Delete Forever</span>
+                            </button>
+                        </form>
+                    </div>
+                </article>
+            }
+        </div>
+    }
+</div>

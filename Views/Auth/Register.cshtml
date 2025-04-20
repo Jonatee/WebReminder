@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Register - Remindify";
+    ViewData["PageClass"] = "auth-page";
+}
+
+<div class="auth-container">
+    <div class="content-container">
+        <div class="auth-layout">
+            <div class="auth-card-container">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <h2>Create your account 🚀</h2>
+                        <p>Start your 14-day free trial today</p>
+                    </div>
+
+                    <form action="Register" method="post">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First name</label>
+                                <input id="firstName" name="firstName" placeholder="John" />
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last name</label>
+                                <input id="lastName" name="lastName" placeholder="Doe" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input id="email" name="email" type="email" placeholder="your@email.com" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input id="password" name="password" type="password" placeholder="••••••••" />
+                            <p class="form-hint">Must be at least 8 characters</p>
+                        </div>
+
+                        <button type="submit" class="btn-primary full-width">Create account</button>
+                    </form>
+
+                    <div class="no-card">
+                        <i class="icon-check-circle"></i>
+                        <span>No credit card required</span>
+                    </div>
+
+                    <div class="auth-footer">
+                        <p>
+                            Already have an account?
+                            <a asp-action="Login" asp-controller="Auth">Log in</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-image">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reminder%20Icon.jpg-GhIfwBgt8xqjOInGS6nWdH9jN4krop.jpeg" alt="Reminder App Icon" />
+            </div>
+        </div>
+    </div>
+</div>

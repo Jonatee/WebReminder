@@ -7,8 +7,11 @@ namespace WebReminder.Repositories.Interfaces
         Task<Reminder> AddReminderAsync(Reminder reminder);
         Task<Reminder> UpdateReminderAsync(Guid reminderId);
         Task<Reminder> UpdateReminderAsync(Reminder reminder);
-        Task<Reminder> DeleteReminderAsync(Guid reminderId);
+        Task<bool> DeleteReminderAsync(Guid reminderId);
+        Task<Reminder> RestoreDeletedReminderAsync(Guid reminderId);
         Task<List<Reminder>> GetDueRemindersAsync();
+        Task<List<Reminder>> GetSentRemindersAsync();
+        Task<List<Reminder>> GetAllDeletedRemindersAsync();
         Task<Reminder?> GetReminderAsync(Guid reminderId);
         Task<Reminder?> GetReminderAsync(string title,string description);
         Task<Reminder?> GetReminderAsync(string title, string description,DateTime date);

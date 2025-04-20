@@ -7,6 +7,6 @@ namespace WebReminder.ExternalServices.Interfaces
         Task<bool> SendReminderEmail(ReminderEmailRequestModel emailRequest);
         Task<bool> SendWelcomeEmail(WelcomeEmailRequestModel emailRequest);
         Task<bool> SendEmailConfirmation(EmailConfirmationRequestModel emailRequest);
-        Task<bool> SendEmail(BaseEmailRequestModel emailRequest);
+        Task<bool> SendEmailSMTP(BaseEmailRequestModel mailRequest);
     }
 }

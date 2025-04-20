@@ -1,0 +1,108 @@
+﻿@model WebReminder.Models.DTOs.ReminderUpdateModel
+@{
+    ViewData["Title"] = "Edit Reminder";
+}
+<link rel="stylesheet" href="../css/create-reminder.css" />
+<link rel="stylesheet" href="../css/icons.css" />
+<link href="../css/edit-reminder.css" rel="stylesheet" />
+
+<div class="create-reminder-container">
+    <div class="content-container">
+        <div class="page-header">
+            <a asp-controller="Reminder" asp-action="AllReminders" class="back-link">
+                <i class="icon-arrow-left"></i> Back to Reminders
+            </a>
+            <h1>Edit Reminder</h1>
+        </div>
+
+        <div class="create-reminder-card">
+            <div class="reminder-form-container">
+                <form asp-action="Edit" asp-controller="Reminder" enctype="multipart/form-data" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="ReminderId"/>
+
+                    <div class="form-group">
+                        <label asp-for="Title"></label>
+                        <input asp-for="Title" class="form-control" placeholder="Enter reminder title" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Description"></label>
+                        <textarea asp-for="Description" class="form-control" rows="4" placeholder="Enter reminder details"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label asp-for="DueDate">Due Date</label>
+                            <input asp-for="DueDate" type="datetime-local" class="form-control" />
+                            <span asp-validation-for="DueDate" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Image">Image (Optional)</label>
+                        <input asp-for="Image" type="file" class="form-control" accept="image/*" />
+                        <span asp-validation-for="Image" class="text-danger"></span>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(ViewBag.CurrentImage))
+                    {
+                        <div class="form-group">
+                            <div class="current-image-container">
+                                <label>Current Image</label>
+                                <div class="current-image">
+                                    <img src="@ViewBag.CurrentImage" alt="Current reminder image" />
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input type="checkbox" id="RemoveImage" name="RemoveImage" class="form-check-input" />
+                                    <label for="RemoveImage" class="form-check-label">Remove current image</label>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="form-actions">
+                        <a asp-action="AllReminders" asp-controller="Reminder" class="btn-secondary">Cancel</a>
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+
+            @* <div class="reminder-preview"> *@
+            @*     <h3>Preview</h3> *@
+            @*     <div class="preview-card"> *@
+            @*         <div class="preview-image"> *@
+            @*         @if (ViewBag.CurrentImage != null && !string.IsNullOrEmpty(ViewBag.CurrentImage.ToString())) *@
+            @*          { *@
+            @*           <img src="@ViewBag.CurrentImage" alt="Reminder" id="preview-image" /> *@
+            @*          } *@
+            @*         else *@
+            @*          { *@
+            @*           <img src="/images/reminder-notification.png" alt="Reminder" id="preview-image" /> *@
+            @*          } *@
+
+            @*         </div> *@
+            @*         <div class="preview-content"> *@
+            @*             <h4 id="preview-title">@(string.IsNullOrEmpty(Model.Title) ? "Reminder Title" : Model.Title)</h4> *@
+            @*             <p id="preview-description">@(string.IsNullOrEmpty(Model.Description) ? "Reminder description will appear here..." : Model.Description)</p> *@
+            @*             <div class="preview-meta"> *@
+            @*                 <div class="preview-date"> *@
+            @*                     <i class="icon-calendar"></i> *@
+            @*                     <span id="preview-date"> *@
+            @*                         @(Model.DueDate.ToString("MMM dd, yyyy h:mm tt")) *@
+            @*                     </span> *@
+            @*                 </div> *@
+            @*             </div> *@
+            @*         </div> *@
+            @*     </div> *@
+            @* </div> *@
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="../js/edit-reminder.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+}

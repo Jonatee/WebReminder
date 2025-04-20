@@ -31,6 +31,7 @@ namespace WebReminder.Repositories.Implementaions
             if (getUser != null)
             {
                 var delete = _reminderContext.Users.Remove(getUser);
+                await _reminderContext.SaveChangesAsync();
                 return true;
             }
             return false;

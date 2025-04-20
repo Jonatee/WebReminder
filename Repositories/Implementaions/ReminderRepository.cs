@@ -24,11 +24,15 @@ namespace WebReminder.Repositories.Implementaions
             return reminder;
         }
 
-        public async Task<Reminder> DeleteReminderAsync(Guid reminderId)
+        public async Task<bool> DeleteReminderAsync(Guid reminderId)
         {
             var reminder = await db.Reminders.FirstOrDefaultAsync(x => x.Id == reminderId);
-            db.Reminders.Remove(reminder!);
-            return null;
+            if (reminder is not null)
+            {
+                db.Reminders.Remove(reminder!);
+                return true;
+            }
+            return false;
         }
 
         public async Task<IEnumerable<Reminder>> GetAllReminders(Guid userId)
@@ -52,20 +56,28 @@ namespace WebReminder.Repositories.Implementaions
         }
         public async Task<Reminder?> GetReminderAsync(string title, string description, DateTime date)
         {
-         return await db.Reminders.FirstOrDefaultAsync(x => x.Title == title && x.Description == description && x.DueDate == date);
+            var utcDate = DateTime.SpecifyKind(date, DateTimeKind.Utc);
+            return await db.Reminders.FirstOrDefaultAsync(x =>
+                x.Title == title &&
+                x.Description == description &&
+                x.DueDate == utcDate);
         }
+
 
 
         public async Task<Reminder> UpdateReminderAsync(Guid reminderId)
         {
             var reminder = await db.Reminders.FirstOrDefaultAsync(x => x.Id == reminderId);
             db.Reminders.Update(reminder!);
+            await db.SaveChangesAsync();
             return reminder;
         }
         public async Task<Reminder> UpdateReminderAsync(Reminder reminder)
         {
             var getReminder = await db.Reminders.FirstOrDefaultAsync(x => x.Id == reminder.Id);
+            if (getReminder is null) return null;
             db.Reminders.Update(reminder!);
+            await db.SaveChangesAsync();
             return reminder;
         }
         public async Task SaveChanges()
@@ -80,26 +92,44 @@ namespace WebReminder.Repositories.Implementaions
 
         public async Task<List<Reminder>> GetDueRemindersAsync()
         {
-            if (!_cache.TryGetValue("DueReminders", out List<Reminder> dueReminders))
-            {
-                dueReminders = await db.Reminders
-                    .Where(r =>
-                        !r.IsSent &&
-                        r.DueDate <= DateTime.UtcNow &&
-                        r.DueDate >= DateTime.UtcNow.AddMinutes(-5) &&
-                        r.DueDate <= DateTime.UtcNow.AddMinutes(5)
-                    ).ToListAsync();
+           
+            var now = DateTime.UtcNow;
+            var start = now.AddMinutes(-30);
+            var end = now.AddMinutes(30);
 
-                var cacheExpirationOptions = new MemoryCacheEntryOptions()
-                    .SetSlidingExpiration(TimeSpan.FromMinutes(5))  // Cache will refresh every 5 minutes
-                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(10));  // Cache will expire after 10 minutes
-
-                _cache.Set("DueReminders", dueReminders, cacheExpirationOptions);
-            }
-
+            var dueReminders = await db.Reminders
+                .Where(r => !r.IsSent && !r.IsDeleted && r.DueDate >= start && r.DueDate <= end)
+                .ToListAsync();
             return dueReminders;
         }
 
+        public async Task<List<Reminder>> GetSentRemindersAsync()
+        {
+            var dueReminders = await db.Reminders
+                 .Where(r => r.IsSent).OrderByDescending(r =>r.LastModified)
+                 .ToListAsync();
+            return dueReminders;
+        }
 
+        public async Task<List<Reminder>> GetAllDeletedRemindersAsync()
+        {
+            var dueReminders = await db.Reminders
+                 .Where(r => r.IsDeleted == true).OrderByDescending(r => r.LastModified)
+                 .ToListAsync();
+            return dueReminders;
+        }
+
+        public async Task<Reminder> RestoreDeletedReminderAsync(Guid reminderId)
+        {
+            var getReminder = await db.Reminders.FirstOrDefaultAsync(x => x.Id == reminderId);
+            if (getReminder is null)
+                return null;
+            if (DateTime.UtcNow > getReminder.DueDate)
+                return null;
+            getReminder.IsDeleted = false;
+            db.Reminders.Update(getReminder);
+            await db.SaveChangesAsync();
+            return getReminder;
+        }
     }
 }

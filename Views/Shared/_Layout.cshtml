@@ -3,48 +3,125 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WebReminder</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/WebReminder.styles.css" asp-append-version="true" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/icons.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WebReminder</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+    <div class="app-container @ViewData["PageClass"]">
+        <!-- Header/Navigation -->
+        <header class="site-header">
+            <div class="content-container">
+                <div class="logo">
+                    <a href="@Url.Action("Index", "Home")">
+                        <i class="icon-bell"></i>
+                        <i class="fa-solid fa-bell"></i>
+                        <h1>Remindify</h1>
+                    </a>
                 </div>
+                <button id="mobile-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation">
+                    <!-- Hamburger icon -->
+                    <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="7" x2="21" y2="7" />
+                        <line x1="3" y1="12" x2="21" y2="12" />
+                        <line x1="3" y1="17" x2="21" y2="17" />
+                    </svg>
+                    <!-- Close (X) icon, hidden by default -->
+                    <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         style="display:none;">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+
+                <nav>
+                    <ul id="nav-menu" class="nav-menu">
+                        <li><a href="/">Home</a></li>
+                        @if(User.Identity.IsAuthenticated)
+                        {
+                            <li><a asp-controller="Reminder" asp-action="AllReminders">Reminders</a></li>
+                            <li><a asp-controller="Reminder" asp-action="Trash">Trash</a></li>
+                            <li><a asp-controller="Reminder" asp-action="SentReminders">OutBox</a></li>
+                            <li><a href="#">@User.Identity?.Name</a></li>
+                            <li><a href="@Url.Action("Logout", "Auth")" class="btn-register">LogOut</a></li>
+                        }
+                        else
+                        {
+                           <li><a href="#about">About</a></li>
+                           <li><a asp-action="Login" asp-controller="Auth" >Login</a></li> 
+                           <li><a href="@Url.Action("Register", "Auth")" class="btn-register">Register</a></li>
+                        }
+                    </ul>
+                   
+                </nav>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+        </header>
+
+        <!-- Main Content -->
+        <main class="site-main">
             @RenderBody()
         </main>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+            <div class="content-container">
+                <div class="footer-grid">
+                    <div class="footer-column">
+                        <div class="footer-logo">
+                            <i class="icon-bell"></i>
+                            <i class="fa-solid fa-bell"></i>
+                            <h3>Remindify</h3>
+                        </div>
+                        <p>
+                            Your personal reminder assistant that helps you stay organized and productive.
+                        </p>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4>Product</h4>
+                        <ul>
+                            <li><a href="#features">Features</a></li>
+                            <li><a href="#pricing">Pricing</a></li>
+                            <li><a href="#testimonials">Testimonials</a></li>
+                            <li><a href="#faq">FAQ</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <ul>
+                            <li><a href="#about">About Us</a></li>
+                            <li><a href="#careers">Careers</a></li>
+                            <li><a href="#blog">Blog</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="#privacy">Privacy Policy</a></li>
+                            <li><a href="#terms">Terms of Service</a></li>
+                            <li><a href="#cookies">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <p>&copy; 2025 Remindify. All rights reserved.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="icon-twitter"></i><span class="sr-only">Twitter</span></a>
+                        <a href="#"><i class="icon-github"></i><span class="sr-only">GitHub</span></a>
+                        <a href="#"><i class="icon-instagram"></i><span class="sr-only">Instagram</span></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - WebReminder - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/site.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

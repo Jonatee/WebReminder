@@ -1,15 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 namespace WebReminder.Models.DTOs
 {
     public class BaseEmailRequestModel
     {
-        [Required]
-        public string To { get; set; }
-        [Required]
+        public string To { get; set; } 
+        
         public string Subject { get; set; }
-        [Required]
         public string TextBody { get; set; }
-        [Required]
         public string HtmlBody { get; set; }
     }
     public class ReminderEmailRequestModel : BaseEmailRequestModel
@@ -23,13 +21,13 @@ namespace WebReminder.Models.DTOs
     }
     public class WelcomeEmailRequestModel : BaseEmailRequestModel
     {
-        [Required]
-        public string FirstName { get; set; } = default!;
+        public required string FirstName { get; set; }
+        public required string LastName { get; set; }
+
     }
     public class EmailConfirmationRequestModel : BaseEmailRequestModel
     {
-        [Required]
-        public string VerificationCode { get; set; } = default!;
+        public required string VerificationCode { get; set; } 
     }
 
 }

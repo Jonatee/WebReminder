@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Login - Remindify";
+    ViewData["PageClass"] = "auth-page";
+}
+
+<div class="auth-container">
+    <div class="content-container">
+        <div class="auth-layout">
+            <div class="auth-card-container">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <h2>Welcome back! 👋</h2>
+                        <p>Log in to your Remindify account</p>
+                    </div>
+
+                    <form action="Login" method="post">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input id="email" name="email" type="email" placeholder="your@email.com" />
+                        </div>
+
+                        <div class="form-group">
+                            <div class="label-row">
+                                <label for="password">Password</label>
+                                <a href="@Url.Action("ForgotPassword", "Account")" class="forgot-link">Forgot password?</a>
+                            </div>
+                            <input id="password" name="password" type="password" placeholder="••••••••" />
+                        </div>
+
+                        <button type="submit" class="btn-primary full-width">Log in</button>
+                    </form>
+
+                    <div class="auth-footer">
+                        <p>
+                            Don't have an account?
+                            <a href="@Url.Action("Register", "Auth")">Sign up</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-image">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reminder%20Icon.jpg-GhIfwBgt8xqjOInGS6nWdH9jN4krop.jpeg" alt="Reminder App Icon" />
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,504 @@
+﻿/* create-reminder.css */
+
+/* Base Styles */
+:root {
+    --purple-50: #f5f3ff;
+    --purple-100: #ede9fe;
+    --purple-200: #ddd6fe;
+    --purple-300: #c4b5fd;
+    --purple-400: #a78bfa;
+    --purple-500: #8b5cf6;
+    --purple-600: #7c3aed;
+    --purple-700: #6d28d9;
+    --purple-800: #5b21b6;
+    --purple-900: #4c1d95;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    --red-50: #fef2f2;
+    --red-100: #fee2e2;
+    --red-200: #fecaca;
+    --red-300: #fca5a5;
+    --red-400: #f87171;
+    --red-500: #ef4444;
+    --red-600: #dc2626;
+    --red-700: #b91c1c;
+    --white: #ffffff;
+    --black: #000000;
+    --radius: 0.5rem;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    color: var(--gray-900);
+    background-color: var(--gray-50);
+}
+
+/* Layout */
+.create-reminder-container {
+    min-height: calc(100vh - 200px);
+    background: linear-gradient(135deg, var(--purple-50) 0%, var(--white) 100%);
+    padding: 2rem 0;
+}
+
+.content-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* Page Header */
+.page-header {
+    margin-bottom: 2rem;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--gray-600);
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    transition: color 0.2s;
+}
+
+    .back-link:hover {
+        color: var(--purple-600);
+        text-decoration: none;
+    }
+
+    .back-link i {
+        margin-right: 0.5rem;
+    }
+
+.page-header h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--gray-900);
+}
+
+/* Card Container */
+.create-reminder-card {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 2rem;
+    background-color: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 2rem;
+}
+
+    .create-reminder-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-xl);
+    }
+
+/* Form Styles */
+.reminder-form-container {
+    padding-right: 2rem;
+    border-right: 1px solid var(--gray-200);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+    .form-group label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: var(--gray-700);
+    }
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background-color: var(--white);
+    color: var(--gray-900);
+}
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--purple-400);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+    }
+
+    .form-control::placeholder {
+        color: var(--gray-400);
+    }
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* File Upload Styling */
+input[type="file"].form-control {
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+    input[type="file"].form-control::-webkit-file-upload-button {
+        padding: 0.5rem 1rem;
+        background-color: var(--purple-600);
+        color: white;
+        border: none;
+        border-radius: var(--radius);
+        font-weight: 500;
+        margin-right: 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+        input[type="file"].form-control::-webkit-file-upload-button:hover {
+            background-color: var(--purple-700);
+        }
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* Buttons */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--purple-600);
+    color: white;
+    font-weight: 600;
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(124, 58, 237, 0.25);
+    text-decoration: none;
+}
+
+    .btn-primary:hover {
+        background-color: var(--purple-700);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 10px rgba(124, 58, 237, 0.3);
+        text-decoration: none;
+        color: white;
+    }
+
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--white);
+    color: var(--gray-700);
+    font-weight: 600;
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+    border: 1px solid var(--gray-300);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+    .btn-secondary:hover {
+        background-color: var(--gray-100);
+        color: var(--gray-900);
+        text-decoration: none;
+    }
+
+/* Preview Section */
+.reminder-preview {
+    padding-left: 1rem;
+}
+
+    .reminder-preview h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--gray-900);
+        margin-bottom: 1.5rem;
+    }
+
+.preview-card {
+    background-color: var(--gray-50);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+    .preview-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+    }
+
+.preview-image {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    background-color: var(--gray-200);
+}
+
+    .preview-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+        .preview-image img:hover {
+            transform: scale(1.05);
+        }
+
+.preview-content {
+    padding: 1.5rem;
+}
+
+    .preview-content h4 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--gray-900);
+        margin-bottom: 0.5rem;
+    }
+
+    .preview-content p {
+        color: var(--gray-600);
+        margin-bottom: 1rem;
+        line-height: 1.6;
+    }
+
+.preview-meta {
+    display: flex;
+    align-items: center;
+    color: var(--gray-500);
+    font-size: 0.875rem;
+}
+
+.preview-date {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+    .preview-date i {
+        color: var(--purple-500);
+    }
+
+/* Validation Styles */
+.text-danger {
+    display: block;
+    color: var(--red-600);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    font-weight: 500;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.input-validation-error {
+    border-color: var(--red-400) !important;
+    background-color: var(--red-50);
+}
+
+    .input-validation-error:focus {
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
+    }
+
+.field-validation-valid {
+    display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .create-reminder-card {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    .reminder-form-container {
+        padding-right: 0;
+        border-right: none;
+        border-bottom: 1px solid var(--gray-200);
+        padding-bottom: 2rem;
+    }
+
+    .reminder-preview {
+        padding-left: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .content-container {
+        padding: 0 1rem;
+    }
+
+    .create-reminder-card {
+        padding: 1.5rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+        .form-actions .btn-primary,
+        .form-actions .btn-secondary {
+            width: 100%;
+            justify-content: center;
+        }
+}
+
+@media (max-width: 576px) {
+    .page-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .create-reminder-container {
+        padding: 1rem 0;
+    }
+}
+
+/* Dark Mode Compatibility */
+html.dark-mode .create-reminder-container {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, var(--dark-bg) 100%);
+}
+
+html.dark-mode .create-reminder-card {
+    background-color: var(--dark-card-bg);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .reminder-form-container {
+    border-right-color: var(--dark-border);
+    border-bottom-color: var(--dark-border);
+}
+
+html.dark-mode .form-group label {
+    color: var(--dark-text);
+}
+
+html.dark-mode .form-control {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: var(--dark-border);
+    color: var(--dark-text);
+}
+
+    html.dark-mode .form-control::placeholder {
+        color: var(--dark-text-secondary);
+    }
+
+    html.dark-mode .form-control:focus {
+        border-color: var(--purple-500);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+    }
+
+html.dark-mode .preview-card {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+html.dark-mode .preview-content h4 {
+    color: var(--dark-text);
+}
+
+html.dark-mode .preview-content p {
+    color: var(--dark-text-secondary);
+}
+
+html.dark-mode .preview-meta {
+    color: var(--dark-text-secondary);
+}
+
+html.dark-mode .btn-secondary {
+    background-color: var(--dark-hover);
+    color: var(--dark-text);
+    border-color: var(--dark-border);
+}
+
+    html.dark-mode .btn-secondary:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+html.dark-mode input[type="file"].form-control::-webkit-file-upload-button {
+    background-color: var(--purple-700);
+}
+
+    html.dark-mode input[type="file"].form-control::-webkit-file-upload-button:hover {
+        background-color: var(--purple-800);
+    }
+
+/* Animation for form submission */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(124, 58, 237, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(124, 58, 237, 0);
+    }
+}
+
+button[type="submit"]:active {
+    animation: pulse 0.8s;
+}
+
+/* Live preview animation */
+.preview-update {
+    animation: highlight 1s ease-in-out;
+}
+
+@keyframes highlight {
+    0% {
+        background-color: var(--purple-100);
+    }
+
+    100% {
+        background-color: transparent;
+    }
+}

@@ -1,0 +1,95 @@
+﻿@model WebReminder.Models.DTOs.ReminderResponseModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Reminder - Remindify</title>
+    <link rel="stylesheet" href="~/css/view-reminder.css" />
+    <link rel="stylesheet" href="~/css/icons.css" />
+</head>
+<body>
+    <div class="app-container">    
+        <main class="site-main">
+            <div class="view-reminder-container">
+                <div class="content-container">
+                    <div class="page-header">
+                        <a asp-action="AllReminders" asp-controller="Reminder" class="back-link">
+                            <i class="icon-arrow-left"></i> Back to Reminders
+                        </a>
+                        <h1>Reminder Details</h1>
+                    </div>
+
+                    <div class="reminder-detail-card">
+                        <div class="reminder-header">
+                            <div class="reminder-title-section">
+                                <h2>@Model.Title</h2>
+                                <div class="reminder-status-badges">
+                                    <span class="status-badge sent">@(Model.IsSent ? "Sent" : "Pending")</span>
+                                </div>
+                            </div>
+                            <div class="reminder-actions">
+                                <a asp-action="EditReminder" asp-controller="Reminder" asp-route-id="@Model.Id" class="btn-secondary">
+                                    <i class="icon-edit"></i> Edit
+                                </a>
+                                <form asp-action="DeleteReminder" asp-controller="Reminder" asp-route-id="@Model.Id" method="post" style="display:inline;">
+                                    <button type="submit" class="btn-danger">
+                                        <i class="icon-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="reminder-content">
+                            <div class="reminder-section">
+                                <h3>Description</h3>
+                                <p>@Model.Description</p>
+                            </div>
+
+                            <div class="reminder-section">
+                                <h3>Due Date</h3>
+                                <div class="reminder-meta-item">
+                                    <i class="icon-calendar"></i>
+                                    <span>@Model.DueDate.ToString("MMMM dd, yyyy hh:mm tt")</span>
+                                </div>
+                            </div>
+
+                            @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+                            {
+                                <div class="reminder-section" id="reminder-image-section">
+                                    <h3>Image</h3>
+                                    <div class="reminder-image">
+                                        <img src="@Model.ImageUrl" alt="Reminder image" />
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="reminder-section reminder-metadata">
+                                <div class="metadata-grid">
+                                    <div class="metadata-item">
+                                        <h4>Created</h4>
+                                        <div class="reminder-meta-item">
+                                            <i class="icon-clock"></i>
+                                            <span>@Model.DateCreated.ToString("MMMM dd, yyyy hh:mm tt")</span>
+                                        </div>
+                                    </div>
+                                    <div class="metadata-item">
+                                        <h4>Last Modified</h4>
+                                        <div class="reminder-meta-item">
+                                            <i class="icon-edit"></i>
+                                            <span>@Model.LastModified.ToString("MMMM dd, yyyy hh:mm tt")</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="~/js/view-reminder.js"></script>
+</body>
+</html>

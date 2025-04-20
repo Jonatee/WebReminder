@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,6 +8,7 @@ using WebReminder.Entities;
 using WebReminder.Models.DTOs;
 using WebReminder.Repositories.Interfaces;
 using WebReminder.Services.Interfaces;
+using WebReminder.ExternalServices.Interfaces;
 
 namespace WebReminder.Services.Implementaions
 {
@@ -16,10 +16,12 @@ namespace WebReminder.Services.Implementaions
     {
         private readonly IUserRepository _userRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IEmailService _emailService;
 
-        public UserService(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
+        public UserService(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor,IEmailService emailService)
         {
             _userRepository = userRepository;
+            _emailService = emailService;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -118,7 +120,13 @@ namespace WebReminder.Services.Implementaions
                 var properties = new AuthenticationProperties();
 
                await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, properties);
-
+                var welcomeMail = new WelcomeEmailRequestModel
+                {
+                    FirstName = createdUser.FirstName,
+                    LastName = createdUser.LastName,
+                    To = createdUser.Email,
+                };
+                await _emailService.SendWelcomeEmail(welcomeMail);
                 return new UserResponseModel
                 {
                     FirstName = createdUser.FirstName,

@@ -1,5 +1,6 @@
 ﻿
 using CloudinaryDotNet.Actions;
+using Npgsql;
 using WebReminder.Entities;
 using WebReminder.Models.DTOs;
 using WebReminder.Repositories.Interfaces;
@@ -10,15 +11,10 @@ namespace WebReminder.BackGroundServices
     public class DueReminderServices : BackgroundService
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly IUserRepository _userRepository;
-        private readonly IReminderRespository _reminderRepository;
 
-
-        public DueReminderServices(IServiceProvider serviceProvider,IUserRepository userRepository, IReminderRespository reminderRepository)
+        public DueReminderServices(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            _userRepository = userRepository;
-            _reminderRepository = reminderRepository;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -26,20 +22,27 @@ namespace WebReminder.BackGroundServices
             while (!stoppingToken.IsCancellationRequested)
             {
                 await CheckAndSendRemindersAsync();
-                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken);
             }
         }
 
         private async Task CheckAndSendRemindersAsync()
-        {
-            using (var scope = _serviceProvider.CreateScope())
+         {
+            using var scope = _serviceProvider.CreateScope();
+
+            var reminderService = scope.ServiceProvider.GetRequiredService<IReminderService>();
+            var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
+            var reminderRepository = scope.ServiceProvider.GetRequiredService<IReminderRespository>();
+
+            var dueReminders = await reminderService.GetAllDueReminders();
+            if (dueReminders is not null)
             {
-                var reminderService = scope.ServiceProvider.GetRequiredService<IReminderService>();
-                var dueReminders = await reminderService.GetAllDueReminders();
 
                 foreach (var reminder in dueReminders)
                 {
-                    var user =  await _userRepository.GetAsync(reminder.UserId);
+                    var user = await userRepository.GetAsync(reminder.UserId);
+                    if (user is null) continue;
+
                     var sendEmail = new ReminderEmailRequestModel
                     {
                         ReminderId = reminder.Id,
@@ -48,30 +51,24 @@ namespace WebReminder.BackGroundServices
                         DueDate = reminder.DueDate,
                         ImageUrl = reminder.ImageUrl,
                         Title = reminder.Title,
-                        To = user!.Email,
+                        To = user.Email,
                     };
+
                     var emailSent = await reminderService.SendReminderAsync(sendEmail);
+
                     if (emailSent)
                     {
                         reminder.IsSent = true;
-                        var newReminder = new Reminder
-                        {
-                            UserId = reminder.UserId,
-                            Id = reminder.Id,
-                            IsSent = reminder.IsSent,
-                            DueDate = reminder.DueDate,
-                            Description = reminder.Description,
-                            DateCreated = reminder.DateCreated,
-                            ImageUrl = reminder.ImageUrl,
-                            Title = reminder.Title,
-                            LastModified = DateTime.Now,
-                            IsDeleted = reminder.IsDeleted
-                        };
-                        await _reminderRepository.UpdateReminderAsync(newReminder);
+
+                        reminder.LastModified = DateTime.UtcNow;
+
+                        await reminderRepository.SaveChanges();
                     }
                 }
             }
         }
-
     }
 }
+
+
+

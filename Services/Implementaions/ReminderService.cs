@@ -73,16 +73,16 @@ namespace WebReminder.Services.Implementaions
                     Success = false
                 };
             }
-            if (!string.IsNullOrEmpty(request.Title) && request.DueDate > DateTime.Now && !string.IsNullOrEmpty(request.Description))
+            if (!string.IsNullOrEmpty(request.Title) && request.DueDate > DateTime.UtcNow && !string.IsNullOrEmpty(request.Description))
             {
                 var newReminder = new Reminder
                 {
                     Title = request.Title,
-                    DueDate = request.DueDate,
+                    DueDate = DateTime.SpecifyKind(request.DueDate, DateTimeKind.Utc),
                     ImageUrl = request.Image != null ? await _fileService.UploadImage(request.Image) :string.Empty,
                     Description = request.Description,
                     UserId = _context.UserId,
-                    LastModified = DateTime.Now
+                    LastModified = DateTime.UtcNow
                 };
                 var createReminder = await _reminderRepository.AddReminderAsync(newReminder);
                 if (createReminder is null) 
@@ -118,15 +118,36 @@ namespace WebReminder.Services.Implementaions
             };
         }
 
-        public async Task DeleteReminder(ReminderRequestModel request)
+        public async Task<BaseResponse<bool>> DeleteReminder(Guid id)
         {
-            throw new NotImplementedException();
+            var reminder = await _reminderRepository.GetReminderAsync(id);
+            if (reminder == null)
+            {
+                return new BaseResponse<bool>
+                {
+                    Success = false,
+                    Message = "Reminder not found",
+                    Data = false
+                };
+            }
+
+            reminder.IsDeleted = true;
+            reminder.LastModified = DateTime.UtcNow;
+            await _reminderRepository.UpdateReminderAsync(reminder);
+
+            return new BaseResponse<bool>
+            {
+                Success = true,
+                Message = "Reminder deleted (soft delete)",
+                Data = true
+            };
         }
+
 
         public async Task<IEnumerable<ReminderResponseModel>> GetAllDueReminders()
         {
             var dueReminders = await _reminderRepository.GetDueRemindersAsync();
-            if(dueReminders.Any(x => x.IsDeleted == false))
+            if(dueReminders.Any())
             {
                 return dueReminders.Select(x => new ReminderResponseModel
                 {
@@ -166,6 +187,7 @@ namespace WebReminder.Services.Implementaions
             return new BaseResponse<IEnumerable<ReminderResponseModel>>
             {
                 Message = "No Records Found",
+                Data = [],
                 Success = false
             };
 
@@ -203,12 +225,40 @@ namespace WebReminder.Services.Implementaions
             };
         }
 
-
-
-        public async Task<BaseResponse<ReminderResponseModel>> RestoreReminder(ReminderRequestModel request)
+        public async Task<BaseResponse<ReminderResponseModel>> GetReminder(Guid id)
         {
-            throw new NotImplementedException();
+            var reminder = await _reminderRepository.GetReminderAsync(id);
+
+            if (reminder is null || reminder.UserId != _context.UserId || reminder.IsDeleted)
+            {
+                return new BaseResponse<ReminderResponseModel>
+                {
+                    Success = false,
+                    Message = "Reminder not found or not accessible."
+                };
+            }
+
+            return new BaseResponse<ReminderResponseModel>
+            {
+                Success = true,
+                Message = "Reminder retrieved successfully.",
+                Data = new ReminderResponseModel
+                {
+                    Id = reminder.Id,
+                    Title = reminder.Title,
+                    Description = reminder.Description,
+                    DueDate = reminder.DueDate,
+                    ImageUrl = reminder.ImageUrl,
+                    DateCreated = reminder.DateCreated,
+                    LastModified = reminder.LastModified,
+                    IsSent = reminder.IsSent,
+                    IsDeleted = reminder.IsDeleted
+                }
+            };
         }
+
+
+
 
         public async Task<bool> SendReminderAsync(ReminderEmailRequestModel request)
         {
@@ -255,7 +305,7 @@ namespace WebReminder.Services.Implementaions
                 return response;
             }
 
-            if (DateTime.Now - reminder.DateCreated > TimeSpan.FromMinutes(15))
+            if (DateTime.UtcNow - reminder.DateCreated > TimeSpan.FromMinutes(15))
             {
                 response.Success = false;
                 response.Message = "Update period expired. You can only update the reminder within 15 minutes of creation.";
@@ -274,11 +324,11 @@ namespace WebReminder.Services.Implementaions
 
             reminder.Title = string.IsNullOrWhiteSpace(request.Title) ? reminder.Title : request.Title;
             reminder.Description = string.IsNullOrWhiteSpace(request.Description) ? reminder.Description : request.Description;
-            if (request.DueDate > DateTime.Now)
-                reminder.DueDate = request.DueDate;
+            if (request.DueDate > DateTime.UtcNow)
+                reminder.DueDate = DateTime.SpecifyKind(request.DueDate, DateTimeKind.Utc);
             if (request.Image != null)
                 reminder.ImageUrl = await _fileService.UploadImage(request.Image);
-            reminder.LastModified = DateTime.Now;
+            reminder.LastModified = DateTime.UtcNow;
 
             await _reminderRepository.UpdateReminderAsync(reminder.Id);
 
@@ -293,12 +343,104 @@ namespace WebReminder.Services.Implementaions
                 ImageUrl = reminder.ImageUrl,
                 DateCreated = reminder.DateCreated,
                 LastModified = reminder.LastModified,
-                
             };
 
             return response;
         }
 
+        public async Task<IEnumerable<ReminderResponseModel>> GetAllDeletedReminders()
+        {
+            
+            var dueReminders = await _reminderRepository.GetAllDeletedRemindersAsync();
+            if (dueReminders.Any())
+            {
+                return dueReminders.Where(x=>x.UserId == _context.UserId).Select(x => new ReminderResponseModel
+                {
+                    DateCreated = x.DateCreated,
+                    Description = x.Description,
+                    DueDate = x.DueDate,
+                    LastModified = x.LastModified,
+                    Id = x.Id,
+                    ImageUrl = x.ImageUrl,
+                    IsSent = x.IsSent,
+                    Title = x.Title,
+                    UserId = x.UserId
+                });
+            }
+            return null;
+        }
 
+        public async Task<IEnumerable<ReminderResponseModel>> GetSentReminders()
+        {
+            var dueReminders = await _reminderRepository.GetSentRemindersAsync();
+            if (dueReminders.Any())
+            {
+                return dueReminders.Where(x => x.UserId == _context.UserId).Select(x => new ReminderResponseModel
+                {
+                    DateCreated = x.DateCreated,
+                    Description = x.Description,
+                    DueDate = x.DueDate,
+                    LastModified = x.LastModified,
+                    Id = x.Id,
+                    ImageUrl = x.ImageUrl,
+                    IsSent = x.IsSent,
+                    Title = x.Title,
+                    UserId = x.UserId
+                });
+            }
+            return null;
+        }
+
+        public async Task<BaseResponse<ReminderResponseModel>> PermanentDeleteReminder(Guid id)
+        {
+            var deleteReminder = await _reminderRepository.DeleteReminderAsync(id);
+            if (deleteReminder)
+            {
+                return new BaseResponse<ReminderResponseModel>
+                {
+                    Data = null,
+                    Success = true,
+                    Message = "Deleted Successfully"
+                };
+            }
+            return new BaseResponse<ReminderResponseModel>
+            {
+                Data = null,
+                Success = false,
+                Message = "Error Occured while Deleting"
+            };
+        }
+
+        public async Task<BaseResponse<ReminderResponseModel>> RestoreDeletedReminder(Guid id)
+        {
+            var restore = await _reminderRepository.RestoreDeletedReminderAsync(id);
+            if(restore is not null && !restore.IsDeleted)
+            {
+                return new BaseResponse<ReminderResponseModel>
+                {
+                    Message = "Reminder Restored",
+                    Success = true,
+                    Data = new ReminderResponseModel
+                    {
+                        DateCreated = restore.DateCreated,
+                        Description = restore.Description,
+                        DueDate = restore.DueDate,
+                        ImageUrl = restore.ImageUrl,
+                        IsDeleted = restore.IsDeleted,
+                        IsSent = restore.IsSent,
+                        Id = restore.Id,
+                        Title = restore.Title,
+                        LastModified = restore.LastModified,
+                        UserId = restore.UserId
+                    }
+                };
+            }
+            return new BaseResponse<ReminderResponseModel>
+            {
+                Message = "Cannot Restore Reminder",
+                Success = false,
+                Data = null
+            };
+        }
     }
 }
