@@ -75,6 +75,7 @@ namespace WebReminder.Services.Implementaions
             }
             if (!string.IsNullOrEmpty(request.Title) && request.DueDate > DateTime.UtcNow && !string.IsNullOrEmpty(request.Description))
             {
+                var date = DateTime.UtcNow;
                 var newReminder = new Reminder
                 {
                     Title = request.Title,
@@ -82,7 +83,9 @@ namespace WebReminder.Services.Implementaions
                     ImageUrl = request.Image != null ? await _fileService.UploadImage(request.Image) :string.Empty,
                     Description = request.Description,
                     UserId = _context.UserId,
-                    LastModified = DateTime.UtcNow
+                    LastModified = date,
+                    DateCreated = date
+                    
                 };
                 var createReminder = await _reminderRepository.AddReminderAsync(newReminder);
                 if (createReminder is null) 
@@ -288,7 +291,7 @@ namespace WebReminder.Services.Implementaions
                 return response;
             }
 
-            if (reminder.LastModified != reminder.DateCreated)
+            if (reminder.LastModified.Minute != reminder.DateCreated.Minute)
             {
                 response.Success = false;
                 response.Message = "Reminder has already been updated and can no longer be modified.";

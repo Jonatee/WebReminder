@@ -66,7 +66,7 @@ namespace WebReminder.Controllers
                 ViewBag.Message = reminders.Message;
                 return RedirectToAction("Trash");
             }
-            return RedirectToAction("ViewReminders", new { id } );
+            return RedirectToAction("AllReminders");
         }
         [HttpPost]
         public async Task<IActionResult> RestoreReminder(Guid id)
@@ -75,9 +75,9 @@ namespace WebReminder.Controllers
             if (!reminders.Success)
             {
                 ViewBag.Message = reminders.Message;
-                return RedirectToAction("AllReminders");
+                return RedirectToAction("Trash");
             }
-            return View("Trash");
+            return View("AllReminders");
         }
         public async Task<IActionResult> SentReminders()
         {
@@ -115,6 +115,7 @@ namespace WebReminder.Controllers
         }
 
         [HttpPost]
+        [RequestSizeLimit(5 * 1024 * 1024)]
         public async Task<IActionResult> CreateReminder(ReminderRequestModel reminder)
         {
             var result = await _service.CreateReminder(reminder);
@@ -125,19 +126,30 @@ namespace WebReminder.Controllers
         }
         
 
-        public IActionResult EditReminder()
+        public async Task<IActionResult> EditReminder(Guid id)
         {
-            return View();
+            var result = await _service.GetReminder(id);
+            if (!result.Success)
+                return View();
+            var viewModel = new ReminderUpdateModel
+            {
+                Description = result.Data.Description,
+                DueDate = result.Data.DueDate,
+                ReminderId = result.Data.Id,
+                Title = result.Data.Title,
+            };
+            ViewBag.CurrentImage = result.Data.ImageUrl;
+            return View(viewModel);
         }
 
         
         [HttpPost]
+        [RequestSizeLimit(5*1024*1024)]
         public async Task<IActionResult> EditReminder(ReminderUpdateModel reminder)
         {
             var result = await _service.UpdateReminder(reminder);
             if (!result.Success)
                 return View(reminder);
-
             return RedirectToAction("AllReminders");
         }
     }

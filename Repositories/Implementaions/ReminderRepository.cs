@@ -30,6 +30,7 @@ namespace WebReminder.Repositories.Implementaions
             if (reminder is not null)
             {
                 db.Reminders.Remove(reminder!);
+                await db.SaveChangesAsync();
                 return true;
             }
             return false;

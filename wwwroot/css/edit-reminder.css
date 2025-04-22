@@ -1,7 +1,4 @@
-﻿/* Additional styles for edit-reminder.css */
-/* Using some styles from create-reminder.css */
-
-.current-image-container {
+﻿.current-image-container {
     margin-bottom: 1.5rem;
     border: 1px solid var(--gray-200);
     border-radius: var(--radius);

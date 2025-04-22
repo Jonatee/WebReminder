@@ -1,10 +1,7 @@
 ﻿@model WebReminder.Models.DTOs.ReminderUpdateModel
-@{
-    ViewData["Title"] = "Edit Reminder";
-}
-<link rel="stylesheet" href="../css/create-reminder.css" />
-<link rel="stylesheet" href="../css/icons.css" />
-<link href="../css/edit-reminder.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/css/create-reminder.css" />
+<link rel="stylesheet" href="~/css/icons.css" />
+<link href="~/css/edit-reminder.css" rel="stylesheet" />
 
 <div class="create-reminder-container">
     <div class="content-container">
@@ -17,7 +14,7 @@
 
         <div class="create-reminder-card">
             <div class="reminder-form-container">
-                <form asp-action="Edit" asp-controller="Reminder" enctype="multipart/form-data" method="post">
+                <form asp-action="EditReminder" asp-controller="Reminder" enctype="multipart/form-data" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="ReminderId"/>
 
@@ -70,39 +67,40 @@
                 </form>
             </div>
 
-            @* <div class="reminder-preview"> *@
-            @*     <h3>Preview</h3> *@
-            @*     <div class="preview-card"> *@
-            @*         <div class="preview-image"> *@
-            @*         @if (ViewBag.CurrentImage != null && !string.IsNullOrEmpty(ViewBag.CurrentImage.ToString())) *@
-            @*          { *@
-            @*           <img src="@ViewBag.CurrentImage" alt="Reminder" id="preview-image" /> *@
-            @*          } *@
-            @*         else *@
-            @*          { *@
-            @*           <img src="/images/reminder-notification.png" alt="Reminder" id="preview-image" /> *@
-            @*          } *@
+                 <div class="reminder-preview"> 
+                 <h3>Preview</h3> 
+                 <div class="preview-card"> 
+                      <div class="preview-image"> 
+                      @if (ViewBag.CurrentImage != null && !string.IsNullOrEmpty(ViewBag.CurrentImage.ToString()))
+                       { 
+                        <img src="@ViewBag.CurrentImage" alt="Reminder" id="preview-image" /> 
+                      }
+                    else 
+                      { 
+                       <img src="~/images/Day or date reminder with calendar concept illustration flat design vector eps10_ modern graphic element for landing page, empty state ui, infographic, icon.jpg" alt="Reminder" id="preview-image" />
+                     } 
 
-            @*         </div> *@
-            @*         <div class="preview-content"> *@
-            @*             <h4 id="preview-title">@(string.IsNullOrEmpty(Model.Title) ? "Reminder Title" : Model.Title)</h4> *@
-            @*             <p id="preview-description">@(string.IsNullOrEmpty(Model.Description) ? "Reminder description will appear here..." : Model.Description)</p> *@
-            @*             <div class="preview-meta"> *@
-            @*                 <div class="preview-date"> *@
-            @*                     <i class="icon-calendar"></i> *@
-            @*                     <span id="preview-date"> *@
-            @*                         @(Model.DueDate.ToString("MMM dd, yyyy h:mm tt")) *@
-            @*                     </span> *@
-            @*                 </div> *@
-            @*             </div> *@
-            @*         </div> *@
-            @*     </div> *@
-            @* </div> *@
+                  </div> 
+                     <div class="preview-content"> 
+                         <h4 id="preview-title">@(string.IsNullOrEmpty(Model.Title) ? "Reminder Title" : Model.Title)</h4> 
+                          <p id="preview-description">@(string.IsNullOrEmpty(Model.Description) ? "Reminder description will appear here..." : Model.Description)</p> 
+                         <div class="preview-meta">
+                             <div class="preview-date">
+                                 <i class="icon-calendar"></i> 
+                                 <span id="preview-date"> 
+                                    @(Model.DueDate.ToString("MMM dd, yyyy h:mm tt")) 
+                                 </span> 
+                             </div> 
+                         </div> 
+                   </div> 
+                </div> 
+             </div> 
         </div>
     </div>
 </div>
 
 @section Scripts {
-    <script src="../js/edit-reminder.js"></script>
+   
+    <script src="~/js/edit-reminder.js"></script>
     <partial name="_ValidationScriptsPartial" />
 }

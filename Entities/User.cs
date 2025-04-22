@@ -10,5 +10,6 @@
         public HashSet<Reminder> Reminders { get; set; } = new HashSet<Reminder>();
         public DateTime DateCreated { get; set; } = DateTime.UtcNow;
         public DateTime LastLoginAt { get; set; }
+        public bool IsVerified{ get; set; }
     }
 }

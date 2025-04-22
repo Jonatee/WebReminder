@@ -38,7 +38,28 @@ namespace WebReminder.Services.Implementaions
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 LastLoginAt = user.LastLoginAt,
-                Id = user.Id
+                Id = user.Id,
+                IsVerified = user.IsVerified
+
+            };
+            return response;
+        }
+
+        public async Task<UserResponseModel> GetUser(string email)
+        {
+            var user = await _userRepository.GetAsync(email);
+            if (user == null)
+            {
+                return null;
+            }
+            var response = new UserResponseModel
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                LastLoginAt = user.LastLoginAt,
+                Id = user.Id,
+                IsVerified = user.IsVerified
             };
             return response;
         }
@@ -82,6 +103,7 @@ namespace WebReminder.Services.Implementaions
                 LastName = getUser.LastName,
                 LastLoginAt = getUser.LastLoginAt,
                 Id = getUser.Id,
+                IsVerified = getUser.IsVerified
             };
             _userRepository.SaveChanges();
 
@@ -152,6 +174,25 @@ namespace WebReminder.Services.Implementaions
                 return true;
             }
             return false;
+        }
+
+        public async Task<UserResponseModel> UpdateUser(string email)
+        {
+            var user = await _userRepository.GetAsync(email);
+            user.IsVerified = true;
+            var update = await _userRepository.UpdateAsync(user);
+            if(update == null)
+            {
+                return null;
+            }
+            return new UserResponseModel
+            {
+                IsVerified = update.IsVerified,
+                Email = update.Email,
+                FirstName = update.FirstName,
+                Id = update.Id,
+                LastName = update.LastName
+            };
         }
     }
 }

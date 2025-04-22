@@ -1,9 +1,15 @@
-﻿namespace WebReminder.Models.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WebReminder.Models.DTOs
 {
    
         public class ReminderRequestModel
         {
+        [Required]
+        [StringLength(100)]
             public string Title { get; set; } = default!;
+        [Required]
+        [StringLength(100)]
             public string Description { get; set; } = default!;
             public DateTime DueDate { get; set; }
             public IFormFile? Image { get; set; }
@@ -11,7 +17,11 @@
            public class ReminderUpdateModel
            {
         public Guid ReminderId { get; set; }
+        [Required]
+        [StringLength(100)]
         public string Title { get; set; } = default!;
+        [Required]
+        [StringLength(100)]
         public string Description { get; set; } = default!;
         public DateTime DueDate { get; set; }
         public IFormFile? Image { get; set; }

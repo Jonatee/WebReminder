@@ -1,0 +1,28 @@
+﻿@model WebReminder.Models.DTOs.VerifyEmail
+<link href="~/css/verify-email.css" rel="stylesheet" />
+<!--modernizr min js here-->
+<script src="/assets/js/vendor/modernizr-3.7.1.min.js"></script>
+
+<div class="reset-password-container">
+    <h2>Verify Email</h2>
+    <div class="notification">
+        Code has been sent to your email.
+    </div>
+    <form asp-action="VerifyEmail" method="post">
+        <div class="form-group">
+            <input asp-for="Email" class="form-control" type="email" placeholder="Enter your email" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+       
+        <div class="form-group">
+            <input asp-for="Code" class="form-control" type="text" placeholder="Enter recovery code" />
+            <span asp-validation-for="Code" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Verify Email</button>
+    </form>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

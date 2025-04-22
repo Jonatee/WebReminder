@@ -42,6 +42,11 @@ namespace WebReminder.Repositories.Implementaions
             return await _reminderContext.Users.FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<User?> GetAsync(string email)
+        {
+            return await _reminderContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+        }
+
         public async Task<User?> GetByEmailAsync(string email)
         {
             return await _reminderContext.Users.FirstOrDefaultAsync(x => x.Email == email);
@@ -49,6 +54,15 @@ namespace WebReminder.Repositories.Implementaions
         public async Task SaveChanges()
         {
             await _reminderContext.SaveChangesAsync();
+        }
+
+        public async Task<User> UpdateAsync(User user)
+        {
+            var getReminder = await _reminderContext.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
+            if (getReminder is null) return null;
+            _reminderContext.Users.Update(user!);
+            await _reminderContext.SaveChangesAsync();
+            return user;
         }
     }
 }
