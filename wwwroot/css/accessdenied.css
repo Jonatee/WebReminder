@@ -1,0 +1,70 @@
+﻿.access-denied-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+/* Media queries for responsive margin-top */
+@media (max-width: 576px) { /* Extra small devices (portrait phones, less than 576px) */
+    .access-denied-container {
+        margin-top: 20px;
+    }
+}
+
+@media (min-width: 576px) { /* Small devices (landscape phones, 576px and up) */
+    .access-denied-container {
+        margin-top: 50px;
+    }
+}
+
+@media (min-width: 768px) { /* Medium devices (tablets, 768px and up) */
+    .access-denied-container {
+        margin-top: 75px;
+    }
+}
+
+@media (min-width: 992px) { /* Large devices (desktops, 992px and up) */
+    .access-denied-container {
+        margin-top: 100px;
+    }
+}
+
+@media (min-width: 1200px) { /* Extra large devices (large desktops, 1200px and up) */
+    .access-denied-container {
+        margin-top: 125px;
+    }
+}
+
+.access-denied-svg {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
+}
+
+.access-denied-message {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.access-denied-description {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.additional-message {
+    font-size: 16px;
+    color: #666;
+}
+
+    .additional-message a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+        .additional-message a:hover {
+            text-decoration: underline;
+        }

@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <link rel="stylesheet" href="~/css/accessdenied.css" />
+</head>
+<body>
+    <div class="access-denied-container">
+        <svg class="access-denied-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12" y2="16"></line>
+        </svg>
+        <div class="access-denied-message">Error</div>
+        <div class="access-denied-description">Not to worry This might be from our servers</div>
+        <div class="additional-message">
+            Please <a asp-action="Login" asp-controller="Auth">login</a> or if you have any issues, <a href="mailto:jonateeoluwole@gmail.com">contact us</a>.
+        </div>
+    </div>
+</body>
+</html>

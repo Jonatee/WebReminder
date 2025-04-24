@@ -64,7 +64,7 @@ namespace WebReminder.Controllers
             {
                 Email = email
             };
-            return View("VerifyEmail",model);
+            return View("VerifyEmail",verifyemail);
         }
 
         public IActionResult VerifyEmail()

@@ -115,7 +115,6 @@ namespace WebReminder.Controllers
         }
 
         [HttpPost]
-        [RequestSizeLimit(5 * 1024 * 1024)]
         public async Task<IActionResult> CreateReminder(ReminderRequestModel reminder)
         {
             var result = await _service.CreateReminder(reminder);
@@ -144,7 +143,6 @@ namespace WebReminder.Controllers
 
         
         [HttpPost]
-        [RequestSizeLimit(5*1024*1024)]
         public async Task<IActionResult> EditReminder(ReminderUpdateModel reminder)
         {
             var result = await _service.UpdateReminder(reminder);
