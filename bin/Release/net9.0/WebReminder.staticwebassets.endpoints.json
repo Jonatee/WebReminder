@@ -897,6 +897,304 @@
       ]
     },
     {
+      "Route": "css/accessdenied.css",
+      "AssetFile": "css/accessdenied.css.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001972386588"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "506"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"BSp3T/jNzS4lTFCjEKeiD44uvPki4umqRSEVErUnot4=\""
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"ZqUpyKL+DC64KGXxeiG73xXGUTSgipsgdJF+kow/ywY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 24 Apr 2025 12:58:24 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ZqUpyKL+DC64KGXxeiG73xXGUTSgipsgdJF+kow/ywY="
+        }
+      ]
+    },
+    {
+      "Route": "css/accessdenied.css",
+      "AssetFile": "css/accessdenied.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1544"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ZqUpyKL+DC64KGXxeiG73xXGUTSgipsgdJF+kow/ywY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 24 Apr 2025 12:58:24 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ZqUpyKL+DC64KGXxeiG73xXGUTSgipsgdJF+kow/ywY="
+        }
+      ]
+    },
+    {
+      "Route": "css/accessdenied.css.gz",
+      "AssetFile": "css/accessdenied.css.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "506"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"BSp3T/jNzS4lTFCjEKeiD44uvPki4umqRSEVErUnot4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 24 Apr 2025 12:58:24 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-BSp3T/jNzS4lTFCjEKeiD44uvPki4umqRSEVErUnot4="
+        }
+      ]
+    },
+    {
+      "Route": "css/accessdenied.qc1f2xkgog.css",
+      "AssetFile": "css/accessdenied.css.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001972386588"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "506"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"BSp3T/jNzS4lTFCjEKeiD44uvPki4umqRSEVErUnot4=\""
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"ZqUpyKL+DC64KGXxeiG73xXGUTSgipsgdJF+kow/ywY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 24 Apr 2025 12:58:24 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "qc1f2xkgog"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ZqUpyKL+DC64KGXxeiG73xXGUTSgipsgdJF+kow/ywY="
+        },
+        {
+          "Name": "label",
+          "Value": "css/accessdenied.css"
+        }
+      ]
+    },
+    {
+      "Route": "css/accessdenied.qc1f2xkgog.css",
+      "AssetFile": "css/accessdenied.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1544"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ZqUpyKL+DC64KGXxeiG73xXGUTSgipsgdJF+kow/ywY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 24 Apr 2025 12:58:24 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "qc1f2xkgog"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ZqUpyKL+DC64KGXxeiG73xXGUTSgipsgdJF+kow/ywY="
+        },
+        {
+          "Name": "label",
+          "Value": "css/accessdenied.css"
+        }
+      ]
+    },
+    {
+      "Route": "css/accessdenied.qc1f2xkgog.css.gz",
+      "AssetFile": "css/accessdenied.css.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "506"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"BSp3T/jNzS4lTFCjEKeiD44uvPki4umqRSEVErUnot4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 24 Apr 2025 12:58:24 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "qc1f2xkgog"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-BSp3T/jNzS4lTFCjEKeiD44uvPki4umqRSEVErUnot4="
+        },
+        {
+          "Name": "label",
+          "Value": "css/accessdenied.css.gz"
+        }
+      ]
+    },
+    {
       "Route": "css/create-reminder.css",
       "AssetFile": "css/create-reminder.css.gz",
       "Selectors": [

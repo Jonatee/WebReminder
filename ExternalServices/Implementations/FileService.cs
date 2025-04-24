@@ -18,7 +18,7 @@ namespace WebReminder.ExternalServices.Implementations
             var allowedExtensions = new[] { ".jpeg", ".jpg", ".png", ".webp", ".jfif" };
             var allowedMimeTypes = new[] { "image/png", "image/jpeg", "image/webp" };
             var exten = Path.GetExtension(file.FileName).ToLowerInvariant();
-            if(!string.IsNullOrEmpty(exten) ||!allowedExtensions.Contains(exten) || !allowedMimeTypes.Contains(file.ContentType) ) 
+            if(string.IsNullOrEmpty(exten) ||!allowedExtensions.Contains(exten) || !allowedMimeTypes.Contains(file.ContentType) ) 
             return string.Empty;
             try
             {
@@ -39,6 +39,7 @@ namespace WebReminder.ExternalServices.Implementations
             }
             catch (Exception ex)
             {
+                
                 return string.Empty;
             }
          
