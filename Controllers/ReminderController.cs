@@ -31,9 +31,10 @@ namespace WebReminder.Controllers
             var reminders = await _service.GetAllReminders();
             if (!reminders.Success)
             {
-                ViewBag.Message = reminders.Message;
+                TempData["InfoMessage"] = reminders.Message;
                 return View();
             }
+            TempData["InfoMessage"] = reminders.Message;
             return View(reminders);
         }
         public async Task<IActionResult> Trash()
@@ -41,9 +42,10 @@ namespace WebReminder.Controllers
             var reminders = await _service.GetAllDeletedReminders();
             if (reminders is null)
             {
-                ViewBag.Message = "No Deleted Reminders";
+                TempData["InfoMessage"] = "Trash is Empty";
                 return RedirectToAction("AllReminders");
             }
+            TempData["InfoMessage"] = "These are your Deleted Reminders";
             return View(reminders);
         }
         [HttpPost]
@@ -52,10 +54,11 @@ namespace WebReminder.Controllers
             var reminders = await _service.PermanentDeleteReminder(id);
             if (!reminders.Success)
             {
-                ViewBag.Message = reminders.Message;
+                TempData["InfoMessage"] = reminders.Message;
                 return RedirectToAction("Trash");
             }
-            return RedirectToAction("AllReminders");
+            TempData["SuccessMessage"] = reminders.Message;
+            return RedirectToAction("Trash");
         }
         [HttpPost]
         public async Task<IActionResult> DeleteReminder(Guid id)
@@ -63,10 +66,11 @@ namespace WebReminder.Controllers
             var reminders = await _service.DeleteReminder(id);
             if (!reminders.Success)
             {
-                ViewBag.Message = reminders.Message;
+                TempData["InfoMessage"] = reminders.Message;
                 return RedirectToAction("Trash");
             }
-            return RedirectToAction("AllReminders");
+            TempData["SuccessMessage"] = reminders.Message;
+            return RedirectToAction("Trash");
         }
         [HttpPost]
         public async Task<IActionResult> RestoreReminder(Guid id)
@@ -74,9 +78,10 @@ namespace WebReminder.Controllers
             var reminders = await _service.RestoreDeletedReminder(id);
             if (!reminders.Success)
             {
-                ViewBag.Message = reminders.Message;
+                TempData["InfoMessage"] = reminders.Message;
                 return RedirectToAction("Trash");
             }
+            TempData["SuccessMessage"] = reminders.Message;
             return View("AllReminders");
         }
         public async Task<IActionResult> SentReminders()
@@ -84,9 +89,10 @@ namespace WebReminder.Controllers
             var reminders = await _service.GetSentReminders();
             if (reminders is null)
             {
-                ViewBag.Message = "No Sent Reminders";
+                TempData["InfoMessage"] = "You Have No Sent Reminders";
                 return RedirectToAction("AllReminders");
             }
+            TempData["SuccessMessage"] = "All your Sent Reminders";
             return View(reminders);
         }
 
@@ -99,12 +105,13 @@ namespace WebReminder.Controllers
             }
 
             var reminder = await _service.GetReminder(id);
-            if (reminder == null)
+            if (!reminder.Success)
             {
                 ViewBag.Message = "Reminder Not Accessible";
+                TempData["InfoMessage"] = reminder.Message;
                 return View("AllReminders");
             }
-
+            TempData["SuccessMessage"] = reminder.Message;
             return View(reminder.Data);
         }
 
@@ -119,8 +126,11 @@ namespace WebReminder.Controllers
         {
             var result = await _service.CreateReminder(reminder);
             if (!result.Success)
+            {
+                TempData["WarningMessage"] = result.Message;
                 return View(reminder);
-
+            }
+            TempData["SuccessMessage"] = result.Message;
             return RedirectToAction("AllReminders");
         }
         
@@ -129,7 +139,10 @@ namespace WebReminder.Controllers
         {
             var result = await _service.GetReminder(id);
             if (!result.Success)
+            {
+                TempData["InfoMessage"] = result.Message;
                 return View();
+            }
             var viewModel = new ReminderUpdateModel
             {
                 Description = result.Data.Description,
@@ -138,6 +151,7 @@ namespace WebReminder.Controllers
                 Title = result.Data.Title,
             };
             ViewBag.CurrentImage = result.Data.ImageUrl;
+            TempData["InfoMessage"] = "Edit your Reminder";
             return View(viewModel);
         }
 
@@ -147,7 +161,11 @@ namespace WebReminder.Controllers
         {
             var result = await _service.UpdateReminder(reminder);
             if (!result.Success)
+            {
+                TempData["InfoMessage"] = result.Message;
                 return View(reminder);
+            }
+            TempData["SuccessMessage"] = result.Message;
             return RedirectToAction("AllReminders");
         }
     }

@@ -45,7 +45,10 @@ namespace WebReminder.Controllers
         {
             var registerUser = await _userService.RegisterUser(model);
             if (registerUser == null)
+            {
+                TempData["ErrorMessage"] = "User Already Exists. Please Login";
                 return View(model);
+            }
             var recoverycode = new Random().Next(1000, 10000);
             var email = model.Email;
             var cacheSet = _cache.Set<string>(email, recoverycode.ToString(), TimeSpan.FromMinutes(10));
@@ -58,12 +61,14 @@ namespace WebReminder.Controllers
             if (!confirmation)
             {
                 ModelState.AddModelError("Email", "Email not Sent");
+                TempData["WarningMessage"] = "Email Not Sent,Please Try Again";
                 return View();
             }
             var verifyemail = new VerifyEmail
             {
                 Email = email
             };
+            TempData["InfoMessage"] = "Code has been sent to yor mail for verification";
             return View("VerifyEmail",verifyemail);
         }
 
@@ -81,6 +86,7 @@ namespace WebReminder.Controllers
             var userAccountCheck =  await _userService.GetUser(verifyEmail.Email);
             if(userAccountCheck == null)
             {
+                TempData["WarningMessage"] = "Please Register Before using this Service";
                 ModelState.AddModelError("Email", "No Account with the email found");
                 return View(verifyEmail);
             }
@@ -90,8 +96,10 @@ namespace WebReminder.Controllers
               var user =  await _userService.UpdateUser(verifyEmail.Email);
                 if (user != null)
                 {
+                    TempData["SuccessMessage"] = "Successfully Verified";
                     return RedirectToAction("Login");
                 }
+                TempData["ErrorMessage"] = "Could not verify You ,Please Tray Again or Later";
                 return View();
             }
             ModelState.AddModelError("Code", "Invalid Code");
@@ -109,7 +117,8 @@ namespace WebReminder.Controllers
             var login = await _userService.LoginUser(model);
             if (login == null)
             {
-                ModelState.AddModelError("Password", "Invalid Password");
+                TempData["ErrorMessage"] = "Incorrect Credentials";
+                ModelState.AddModelError("Password", "Invalid Credentials");
                 return View(model);
             }
             if (!login.IsVerified)
@@ -126,16 +135,19 @@ namespace WebReminder.Controllers
                 var confirmation = await _emailService.SendEmailConfirmation(emailSender);
                 if (!confirmation)
                 {
+                    TempData["ErrorMessage"] = "Email Not Sent Try Again Later";
                     ModelState.AddModelError("Email", "Email not Sent");
                     return View();
                 }
                 return View("VerifyEmail");
             }
+            TempData["SuccessMessage"] = "Login Successful";
             return RedirectToAction("AllReminders","Reminder");
         }
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            TempData["SuccessMessage"] = "Logged Out Successfully";
             return RedirectToAction("Login");
         }
 

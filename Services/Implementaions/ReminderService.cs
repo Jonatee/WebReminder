@@ -124,12 +124,22 @@ namespace WebReminder.Services.Implementaions
         public async Task<BaseResponse<bool>> DeleteReminder(Guid id)
         {
             var reminder = await _reminderRepository.GetReminderAsync(id);
+            
             if (reminder == null)
             {
                 return new BaseResponse<bool>
                 {
                     Success = false,
                     Message = "Reminder not found",
+                    Data = false
+                };
+            }
+            if (reminder.UserId != _context.UserId)
+            {
+                return new BaseResponse<bool>
+                {
+                    Success = false,
+                    Message = "You're not allowed to delete this!",
                     Data = false
                 };
             }
@@ -290,6 +300,15 @@ namespace WebReminder.Services.Implementaions
                 response.Message = "Reminder not found.";
                 return response;
             }
+            if (reminder.UserId != _context.UserId)
+            {
+                return new BaseResponse<ReminderResponseModel>
+                {
+                    Success = false,
+                    Message = "You're not allowed to delete this!",
+                    Data = null
+                };
+            }
 
             if (reminder.LastModified.Minute != reminder.DateCreated.Minute)
             {
@@ -417,7 +436,16 @@ namespace WebReminder.Services.Implementaions
         public async Task<BaseResponse<ReminderResponseModel>> RestoreDeletedReminder(Guid id)
         {
             var restore = await _reminderRepository.RestoreDeletedReminderAsync(id);
-            if(restore is not null && !restore.IsDeleted)
+            if (restore.UserId != _context.UserId)
+            {
+                return new BaseResponse<ReminderResponseModel>
+                {
+                    Success = false,
+                    Message = "You're not allowed to delete this!",
+                    Data = null
+                };
+            }
+            if (restore is not null && !restore.IsDeleted)
             {
                 return new BaseResponse<ReminderResponseModel>
                 {

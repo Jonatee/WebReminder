@@ -4,12 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/icons.css" />
 </head>
 <body>
     <div class="app-container @ViewData["PageClass"]">
-        <!-- Header/Navigation -->
         <header class="site-header">
             <div class="content-container">
                 <div class="logo">
@@ -20,14 +20,12 @@
                     </a>
                 </div>
                 <button id="mobile-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation">
-                    <!-- Hamburger icon -->
                     <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="3" y1="7" x2="21" y2="7" />
                         <line x1="3" y1="12" x2="21" y2="12" />
                         <line x1="3" y1="17" x2="21" y2="17" />
                     </svg>
-                    <!-- Close (X) icon, hidden by default -->
                     <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                          style="display:none;">
@@ -39,7 +37,7 @@
                 <nav>
                     <ul id="nav-menu" class="nav-menu">
                         <li><a href="/">Home</a></li>
-                        @if(User.Identity.IsAuthenticated)
+                        @if (User.Identity.IsAuthenticated)
                         {
                             <li><a asp-controller="Reminder" asp-action="AllReminders">Reminders</a></li>
                             <li><a asp-controller="Reminder" asp-action="Trash">Trash</a></li>
@@ -49,22 +47,19 @@
                         }
                         else
                         {
-                           <li><a href="#about">About</a></li>
-                           <li><a asp-action="Login" asp-controller="Auth" >Login</a></li> 
-                           <li><a href="@Url.Action("Register", "Auth")" class="btn-register">Register</a></li>
+                            <li><a href="#about">About</a></li>
+                            <li><a asp-action="Login" asp-controller="Auth">Login</a></li>
+                            <li><a href="@Url.Action("Register", "Auth")" class="btn-register">Register</a></li>
                         }
                     </ul>
-                   
                 </nav>
             </div>
         </header>
 
-        <!-- Main Content -->
         <main class="site-main">
             @RenderBody()
         </main>
 
-        <!-- Footer -->
         <footer class="site-footer">
             <div class="content-container">
                 <div class="footer-grid">
@@ -121,6 +116,32 @@
         </footer>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "positionClass": "toast-top-right",
+            "progressBar": true,
+            "timeOut": "5000"
+        };
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>toastr.success('@Html.Raw(TempData["SuccessMessage"])');</text>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <text>toastr.error('@Html.Raw(TempData["ErrorMessage"])');</text>
+        }
+        @if (TempData["WarningMessage"] != null)
+        {
+            <text>toastr.warning('@Html.Raw(TempData["WarningMessage"])');</text>
+        }
+        @if (TempData["InfoMessage"] != null)
+        {
+            <text>toastr.info('@Html.Raw(TempData["InfoMessage"])');</text>
+        }
+    </script>
     <script src="~/js/site.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

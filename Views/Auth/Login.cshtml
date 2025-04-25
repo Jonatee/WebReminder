@@ -1,7 +1,10 @@
-﻿@{
+﻿@model WebReminder.Models.DTOs.LoginRequestModel
+
+@{
     ViewData["Title"] = "Login - Remindify";
     ViewData["PageClass"] = "auth-page";
 }
+
 
 <div class="auth-container">
     <div class="content-container">
@@ -13,34 +16,46 @@
                         <p>Log in to your Remindify account</p>
                     </div>
 
-                    <form action="Login" method="post">
+                    <form asp-action="Login" method="post" novalidate>
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input id="email" name="email" type="email" placeholder="your@email.com" />
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" type="email" placeholder="your@email.com" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
                         <div class="form-group">
-                            <div class="label-row">
-                                <label for="password">Password</label>
-                            </div>
-                            <input id="password" name="password" type="password" placeholder="••••••••" />
+                            <label asp-for="Password"></label>
+                            <input asp-for="Password" type="password" placeholder="••••••••" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
 
-                        <button type="submit" class="btn-primary full-width">Log in</button>
+                        <button type="submit" class="btn-primary full-width">
+                            Log in
+                        </button>
                     </form>
 
                     <div class="auth-footer">
                         <p>
                             Don't have an account?
-                            <a href="@Url.Action("Register", "Auth")">Sign up</a>
+                            <a asp-action="Register" asp-controller="Auth">Sign up</a>
                         </p>
                     </div>
                 </div>
             </div>
 
             <div class="auth-image">
-                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reminder%20Icon.jpg-GhIfwBgt8xqjOInGS6nWdH9jN4krop.jpeg" alt="Reminder App Icon" />
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reminder%20Icon.jpg-GhIfwBgt8xqjOInGS6nWdH9jN4krop.jpeg"
+                     alt="Reminder App Icon" />
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <!-- jQuery (required by jquery.validate) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- jQuery Validation + Unobtrusive -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+}

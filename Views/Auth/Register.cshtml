@@ -1,7 +1,10 @@
-﻿@{
+﻿@model WebReminder.Models.DTOs.UserRequestModel
+
+@{
     ViewData["Title"] = "Register - Remindify";
     ViewData["PageClass"] = "auth-page";
 }
+
 
 <div class="auth-container">
     <div class="content-container">
@@ -13,30 +16,37 @@
                         <p>Start your 14-day free trial today</p>
                     </div>
 
-                    <form action="Register" method="post">
+                   
+                    <form asp-action="Register" method="post" novalidate>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="firstName">First name</label>
-                                <input id="firstName" name="firstName" placeholder="John" />
+                                <label asp-for="FirstName"></label>
+                                <input asp-for="FirstName" class="form-control" placeholder="John" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label for="lastName">Last name</label>
-                                <input id="lastName" name="lastName" placeholder="Doe" />
+                                <label asp-for="LastName"></label>
+                                <input asp-for="LastName" class="form-control" placeholder="Doe" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input id="email" name="email" type="email" placeholder="your@email.com" />
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" class="form-control" placeholder="you@domain.com" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
                         <div class="form-group">
-                            <label for="password">Password</label>
-                            <input id="password" name="password" type="password" placeholder="••••••••" />
+                            <label asp-for="Password"></label>
+                            <input asp-for="Password" class="form-control" placeholder="••••••••" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
                             <p class="form-hint">Must be at least 8 characters</p>
                         </div>
 
-                        <button type="submit" class="btn-primary full-width">Create account</button>
+                        <button type="submit" class="btn-primary full-width">
+                            Create account
+                        </button>
                     </form>
 
                     <div class="no-card">
@@ -54,8 +64,18 @@
             </div>
 
             <div class="auth-image">
-                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reminder%20Icon.jpg-GhIfwBgt8xqjOInGS6nWdH9jN4krop.jpeg" alt="Reminder App Icon" />
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reminder%20Icon.jpg-GhIfwBgt8xqjOInGS6nWdH9jN4krop.jpeg"
+                     alt="Reminder App Icon" />
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <!-- jQuery (required by jquery.validate) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- jQuery Validation + Unobtrusive -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+}
