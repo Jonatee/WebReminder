@@ -69,7 +69,7 @@ namespace WebReminder.Services.Implementaions
             {
                 return new BaseResponse<ReminderResponseModel>
                 {
-                    Message = "Reminder ALl Exists",
+                    Message = "Reminder Already Exists",
                     Success = false
                 };
             }

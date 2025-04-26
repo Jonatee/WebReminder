@@ -18,6 +18,8 @@ namespace WebReminder.Services.Implementaions
                 out var userId)
             ? userId
             : throw new UnauthorizedAccessException("User not authenticated");
+
+        public string UserIpAddress => _contextAccessor.HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault() ??_contextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
     }
 
 }

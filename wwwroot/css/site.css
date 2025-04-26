@@ -677,6 +677,7 @@ input {
 @media (max-width: 768px) {
     .mobile-nav-toggle {
         display: block;
+        margin-left:150px;
     }
 
     .nav-menu {
