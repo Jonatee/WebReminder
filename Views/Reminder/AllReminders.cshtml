@@ -61,9 +61,10 @@
                             <h3>@reminder.Title</h3>
                             <p>@reminder.Description</p>
 
-                            <span class="reminder-date" data-time="@reminder.DueDate.ToString("h:mm tt")">
-                                Due: @reminder.DueDate.ToString("MMM dd, yyyy")
+                            <span class="reminder-date" data-time="@reminder.DueDate.ToLocalTime().ToString("h:mm tt")">
+                                Due: @reminder.DueDate.ToLocalTime().ToString("MMM dd, yyyy")
                             </span>
+
 
                             <span class="reminder-date">
                                 Created: @reminder.DateCreated.ToString("MMM dd, yyyy")

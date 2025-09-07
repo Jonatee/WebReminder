@@ -57,7 +57,7 @@ namespace WebReminder.Repositories.Implementaions
         }
         public async Task<Reminder?> GetReminderAsync(string title, string description, DateTime date)
         {
-            var utcDate = DateTime.SpecifyKind(date, DateTimeKind.Utc);
+            var utcDate = DateTime.SpecifyKind(date, DateTimeKind.Unspecified).ToUniversalTime();
             return await db.Reminders.FirstOrDefaultAsync(x =>
                 x.Title == title &&
                 x.Description == description &&

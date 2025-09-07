@@ -1,9 +1,12 @@
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using WebReminder.Context;
 using Resend;
-using WebReminder.Configuration;
 using WebReminder.BackGroundServices;
+using WebReminder.Configuration;
+using WebReminder.Context;
+using WebReminder.Services.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,7 +15,18 @@ builder.Services.AddDbContext<ReminderDb>(options => options.UseNpgsql(builder.C
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 builder.Services.AddSession();
-builder.Services.AddHostedService<DueReminderServices>();
+builder.Services.AddHangfire(config => config
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UsePostgreSqlStorage(options =>
+        options.UseNpgsqlConnection(
+            builder.Configuration.GetConnectionString("MigrationConnection")!
+        )
+    )
+);
+
+builder.Services.AddHangfireServer();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -48,7 +62,17 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapStaticAssets();
+app.UseHangfireDashboard("/hangire");
 
+using (var scope = app.Services.CreateScope())
+{
+    var recurringJobs = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
+    recurringJobs.AddOrUpdate<DueReminderServices>(
+        "reminder-sweep",
+        s => s.CheckAndSendRemindersAsync(),
+        "*/15 * * * *"   // every 15 minutes
+    );
+}
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")

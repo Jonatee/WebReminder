@@ -1,4 +1,5 @@
-﻿using Supabase.Gotrue;
+﻿using Hangfire;
+using Supabase.Gotrue;
 using System.Security.Claims;
 using WebReminder.Context;
 using WebReminder.Entities;
@@ -18,13 +19,17 @@ namespace WebReminder.Services.Implementaions
         private readonly IEmailService _emailService;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IFileService _fileService;
-        public ReminderService(IReminderRespository reminderRespository,IHttpContextAccessor httpContextAccessor, IUserContext context,IEmailService emailService,IFileService fileService)
+        private readonly IBackgroundJobClient _backgroundJobs;
+        private readonly IUserRepository _userRepository;
+        public ReminderService(IReminderRespository reminderRespository,IUserRepository userRepository,IBackgroundJobClient backgroundJobClient,IHttpContextAccessor httpContextAccessor, IUserContext context,IEmailService emailService,IFileService fileService)
         {
             _reminderRepository = reminderRespository;
             _fileService = fileService;
             _contextAccessor = httpContextAccessor;
+            _userRepository = userRepository;
             _context = context;
             _emailService = emailService;
+            _backgroundJobs = backgroundJobClient;
         }
         public async Task<IEnumerable<ReminderResponseModel>> BulkCreate(List<ReminderRequestModel> reminderRequests)
         {
@@ -62,10 +67,13 @@ namespace WebReminder.Services.Implementaions
         }
 
 
+
         public async Task<BaseResponse<ReminderResponseModel>> CreateReminder(ReminderRequestModel request)
         {
-            var checkIfReminderExists = await _reminderRepository.GetReminderAsync(request.Title, request.Description,request.DueDate);
-            if(checkIfReminderExists is not null)
+            var checkIfReminderExists = await _reminderRepository.GetReminderAsync(
+                request.Title, request.Description, request.DueDate);
+
+            if (checkIfReminderExists is not null)
             {
                 return new BaseResponse<ReminderResponseModel>
                 {
@@ -73,22 +81,27 @@ namespace WebReminder.Services.Implementaions
                     Success = false
                 };
             }
-            if (!string.IsNullOrEmpty(request.Title) && request.DueDate > DateTime.UtcNow && !string.IsNullOrEmpty(request.Description))
+
+            if (!string.IsNullOrEmpty(request.Title) &&
+                request.DueDate > DateTime.UtcNow &&
+                !string.IsNullOrEmpty(request.Description))
             {
                 var date = DateTime.UtcNow;
                 var newReminder = new Reminder
                 {
                     Title = request.Title,
-                    DueDate = DateTime.SpecifyKind(request.DueDate, DateTimeKind.Utc),
-                    ImageUrl = request.Image != null ? await _fileService.UploadImage(request.Image) :string.Empty,
+                    DueDate = DateTime.SpecifyKind(request.DueDate, DateTimeKind.Unspecified).ToUniversalTime(),
+                    ImageUrl = request.Image != null
+                        ? await _fileService.UploadImage(request.Image)
+                        : string.Empty,
                     Description = request.Description,
                     UserId = _context.UserId,
                     LastModified = date,
                     DateCreated = date
-                    
                 };
+
                 var createReminder = await _reminderRepository.AddReminderAsync(newReminder);
-                if (createReminder is null) 
+                if (createReminder is null)
                 {
                     return new BaseResponse<ReminderResponseModel>
                     {
@@ -96,6 +109,33 @@ namespace WebReminder.Services.Implementaions
                         Success = false
                     };
                 }
+                var user = await _userRepository.GetAsync(newReminder.UserId);
+                if (user is null)
+                {
+                    return new BaseResponse<ReminderResponseModel>
+                    {
+                        Message = "User attached not found",
+                        Success = false
+                    };
+                }
+                // Prepare DTO for scheduled job
+                var sendEmailModel = new ReminderEmailRequestModel
+                {
+                    DateCreated = date,
+                    Description = newReminder.Description,
+                    DueDate = newReminder.DueDate,
+                    ReminderId = newReminder.Id,
+                    Title = newReminder.Title,
+                    ImageUrl = newReminder.ImageUrl,
+                    To = user.Email
+                };
+
+                // Schedule Hangfire job
+                var delay = newReminder.DueDate - DateTime.UtcNow;
+                _backgroundJobs.Schedule<IReminderService>(
+                    service => service.SendReminderAsync(sendEmailModel),
+                    delay > TimeSpan.Zero ? delay : TimeSpan.Zero);
+
                 return new BaseResponse<ReminderResponseModel>
                 {
                     Message = "Reminder Created Successfully",
@@ -114,6 +154,7 @@ namespace WebReminder.Services.Implementaions
                     }
                 };
             }
+
             return new BaseResponse<ReminderResponseModel>
             {
                 Message = "Input fields Carefully",

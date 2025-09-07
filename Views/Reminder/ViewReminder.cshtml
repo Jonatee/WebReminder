@@ -52,7 +52,7 @@
                                 <h3>Due Date</h3>
                                 <div class="reminder-meta-item">
                                     <i class="icon-calendar"></i>
-                                    <span>@Model.DueDate.ToString("MMMM dd, yyyy hh:mm tt")</span>
+                                    <span>@Model.DueDate.ToLocalTime().ToString("MMMM dd, yyyy hh:mm tt")</span>
                                 </div>
                             </div>
 
