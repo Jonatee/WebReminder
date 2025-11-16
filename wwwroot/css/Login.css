@@ -3,7 +3,7 @@
     padding: 0;
     min-height: 100vh;
     background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
-    font-family: Arial, sans-serif;
+    font-family: 'Nunito', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;

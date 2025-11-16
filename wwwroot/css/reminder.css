@@ -42,7 +42,7 @@
 }
 
 body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: 'Nunito', sans-serif;
     margin: 0;
     padding: 0;
     background: var(--color-primary-bg);
@@ -57,6 +57,8 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
+
+    min-height: 100vh;
 }
 
 /* Dashboard Header */
@@ -427,16 +429,20 @@ body {
 /* Empty State */
 .empty-state {
     text-align: center;
+    text-wrap:wrap;
     padding: var(--space-2xl);
+    gap: 1.5rem;
     background: var(--color-white);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
 }
-
-    .empty-state h3 {
-        color: var(--color-primary);
-        margin-bottom: var(--space-md);
-    }
+.empty-state-action{
+    margin:1rem;
+}
+.empty-state h3 {
+    color: var(--color-primary);
+    margin-bottom: var(--space-md);
+}
 
 /* Responsive Styles */
 @media (max-width: 992px) {

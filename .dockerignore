@@ -1,0 +1,20 @@
+# Build artifacts
+bin/
+obj/
+
+# User-specific/IDE stuff
+*.user
+*.suo
+.vscode/
+.idea/
+
+# Git
+.git
+.gitignore
+
+# OS cruft
+**/.DS_Store
+**/Thumbs.db
+
+# Node modules (if frontend bundled inside MVC)
+node_modules/

@@ -1,0 +1,10 @@
+
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Host=ep-lucky-mode-ab0leukp-pooler.eu-west-2.aws.neon.tech;Port=5432;Database=neondb;Username=neondb_owner;Password=npg_hZR9JkCDAB7Q;SSL Mode=Require;Trust Server Certificate=true;

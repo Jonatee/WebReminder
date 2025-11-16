@@ -47,7 +47,7 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: -apple-system,'Nunito', sans-serif;
     line-height: 1.5;
     color: var(--gray-900);
     background-color: var(--gray-50);

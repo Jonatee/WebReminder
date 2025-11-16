@@ -21,11 +21,17 @@
     <meta name="twitter:description" content="Stay organized and on top of your tasks with Remindify. The smart reminder app that helps you manage your
           time effectively." />
     <meta name="twitter:image" content="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reminder%20Icon.jpg-GhIfwBgt8xqjOInGS6nWdH9jN4krop.jpeg" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barriecito&family=Bebas+Neue&family=Cal+Sans&family=Comic+Relief:wght@400;700&family=Rubik:ital,wght@0,300..900;1,300..900&family=Space+Grotesk:wght@300..700&family=Tagesschrift&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/icons.css" />
 </head>
 <body>
     <div class="app-container @ViewData["PageClass"]">
+
         <header class="site-header">
             <div class="content-container">
                 <div class="logo">
@@ -35,6 +41,29 @@
                         <h1>Remindify</h1>
                     </a>
                 </div>
+               
+
+             
+                <nav>
+                    <ul id="nav-menu" class="nav-menu">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li><a asp-controller="Reminder" asp-action="AllReminders"><i class="fa-solid fa-bell"></i> Reminders</a>
+                             </li>
+                            <li><a asp-controller="Reminder" asp-action="Trash"><i class="fa-solid fa-trash"></i> Trash</a></li>
+                            <li><a asp-controller="Reminder" asp-action="SentReminders"><i class="fa-solid fa-paper-plane"></i> OutBox</a></li>
+                            <li><a href="#"><i class="fa-solid fa-user"></i> @User.Identity?.Name</a></li>
+                            <li><a href="@Url.Action("Logout", "Auth")" class="btn-register"><i class="fa-solid fa-right-from-bracket"></i> LogOut</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="/"><i class="fa-solid fa-house"></i> Home</a></li>
+                            <li><a href="#about"><i class="fa-solid fa-circle-info"></i> About</a></li>
+                            <li><a asp-action="Login" asp-controller="Auth"><i class="fa-solid fa-right-to-bracket"></i> Login</a></li>
+                            <li><a href="@Url.Action("Register", "Auth")" class="btn-register"><i class="fa-solid fa-user-plus"></i> Register</a></li>
+                        }
+                    </ul>
+                </nav>
                 <button id="mobile-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation">
                     <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -49,28 +78,9 @@
                         <line x1="6" y1="6" x2="18" y2="18" />
                     </svg>
                 </button>
-
-                <nav>
-                    <ul id="nav-menu" class="nav-menu">
-                        <li><a href="/">Home</a></li>
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li><a asp-controller="Reminder" asp-action="AllReminders">Reminders</a></li>
-                            <li><a asp-controller="Reminder" asp-action="Trash">Trash</a></li>
-                            <li><a asp-controller="Reminder" asp-action="SentReminders">OutBox</a></li>
-                            <li><a href="#">@User.Identity?.Name</a></li>
-                            <li><a href="@Url.Action("Logout", "Auth")" class="btn-register">LogOut</a></li>
-                        }
-                        else
-                        {
-                            <li><a href="#about">About</a></li>
-                            <li><a asp-action="Login" asp-controller="Auth">Login</a></li>
-                            <li><a href="@Url.Action("Register", "Auth")" class="btn-register">Register</a></li>
-                        }
-                    </ul>
-                </nav>
             </div>
         </header>
+        <div id="overlay" class="overlay"></div>
 
         <main class="site-main">
             @RenderBody()

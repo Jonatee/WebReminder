@@ -1,0 +1,79 @@
+﻿@model WebReminder.Models.DTOs.UserResponseModel
+
+@{
+    ViewData["Title"] = "Profile";
+}
+<link rel="stylesheet" href="~/css/profile.css">
+
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header>
+            <h1>@ViewData["Title"]</h1>
+            <p class="subtitle">User Information</p>
+        </header>
+
+        <!-- Profile Card -->
+        <article class="profile-card">
+            <!-- Profile Header with Avatar -->
+            <section class="profile-header">
+                <div class="avatar" aria-label="User avatar">
+                    @{
+                        var initials = $"{Model?.FirstName?.FirstOrDefault()}{Model?.LastName?.FirstOrDefault()}".ToUpper();
+                    }
+                    @initials
+                </div>
+                <div class="profile-intro">
+                    <h2>@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h2>
+                    <p>Member since @DateTime.Now.Year</p>
+                </div>
+            </section>
+
+            <!-- Information Grid -->
+            <section class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">@Html.DisplayNameFor(model => model.FirstName)</div>
+                    <div class="info-value">@Html.DisplayFor(model => model.FirstName)</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">@Html.DisplayNameFor(model => model.LastName)</div>
+                    <div class="info-value">@Html.DisplayFor(model => model.LastName)</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">@Html.DisplayNameFor(model => model.Email)</div>
+                    <div class="info-value">@Html.DisplayFor(model => model.Email)</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">@Html.DisplayNameFor(model => model.LastLoginAt)</div>
+                    <div class="info-value">@Html.DisplayFor(model => model.LastLoginAt)</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">@Html.DisplayNameFor(model => model.IsVerified)</div>
+                    <div class="info-value">
+                        @if (Model?.IsVerified == true)
+                        {
+                            <span>Verified</span>
+                            <span class="badge badge--verified" aria-label="Account verified">✓</span>
+                        }
+                        else
+                        {
+                            <span>Not Verified</span>
+                            <span class="badge badge--unverified" aria-label="Account not verified">✗</span>
+                        }
+                    </div>
+                </div>
+            </section>
+
+            <!-- Action Buttons -->
+            <section class="actions">
+                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn--primary" role="button">Edit Profile</a>
+                <a asp-action="Index" class="btn btn--secondary" role="button">Back to List</a>
+            </section>
+        </article>
+    </div>
+</body>
+</html>

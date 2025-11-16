@@ -62,7 +62,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapStaticAssets();
-app.UseHangfireDashboard("/hangire");
+app.UseHangfireDashboard("/hangfire");
 
 using (var scope = app.Services.CreateScope())
 {

@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using Microsoft.Extensions.Caching.Memory;
 using WebReminder.ExternalServices.Interfaces;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using Microsoft.Build.Framework.Profiler;
 
 namespace WebReminder.Controllers
 {
@@ -143,6 +144,19 @@ namespace WebReminder.Controllers
             }
             TempData["SuccessMessage"] = "Login Successful";
             return RedirectToAction("AllReminders","Reminder");
+        }
+        public async Task<IActionResult> Profile()
+        {
+            Guid userId = _context.UserId;
+            string IpAddress = _context.UserIpAddress;
+
+            var user = await _userService.GetUser(userId);
+            if (user is null)
+            {
+                TempData["ErrorMessage"] = "User not found";
+                return View();
+            }
+            return View(user);
         }
         public async Task<IActionResult> Logout()
         {

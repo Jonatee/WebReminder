@@ -4,14 +4,21 @@
 <div class="sent-reminders-container">
     <header class="page-header">
         <h1>Sent Reminders</h1>
+        @if (ViewBag.InfoMessage != null)
+        {
+            <div class="info-message">
+                <i class="icon-info-circle" aria-hidden="true"></i>
+                <span>@ViewBag.InfoMessage</span>
+            </div>
+        }
     </header>
 
     @if (!Model.Any())
     {
         <div class="empty-state">
             <i class="icon-paper-plane empty-icon"></i>
-            <h2>No Sent Reminders</h2>
-            <p>Reminders you've sent will appear here for your reference.</p>
+            <h2>No Sent Reminders Yet</h2>
+            <p>Reminders you've sent will appear here for your reference. Start by creating a new reminder!</p>
         </div>
     }
     else
@@ -21,7 +28,7 @@
             {
                 <article class="reminder-card" data-reminder-id="@reminder.Id">
                     <div class="reminder-badge">
-                        <i class="icon-check"></i>
+                        <i class="icon-check-circle"></i>
                         <span>Sent</span>
                     </div>
 
@@ -32,7 +39,7 @@
                         @if (!string.IsNullOrEmpty(reminder.ImageUrl))
                         {
                             <div class="reminder-image-container">
-                                <img src="@reminder.ImageUrl" alt="Reminder image" class="reminder-image" />
+                                <img src="@reminder.ImageUrl" alt="@reminder.Title" class="reminder-image" loading="lazy" />
                             </div>
                         }
 

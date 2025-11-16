@@ -3,7 +3,6 @@
 <link rel="stylesheet" href="~/css/reminder.css" />
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
-
 <div class="dashboard-container">
     <div class="content-container">
         <div class="dashboard-header">
@@ -11,7 +10,7 @@
             <div class="dashboard-actions">
                 <div class="search-container">
                     <input type="text" placeholder="Search reminders..." />
-                    <i class="icon-search"></i>
+                    <i class="fas fa-search"></i>
                 </div>
                 <div class="filter-container">
                     <select>
@@ -22,22 +21,22 @@
                     </select>
                 </div>
                 <a href="/Reminder/CreateReminder" class="btn-primary">
-                    + New Reminder
+                    <i class="fas fa-plus"></i> New Reminder
                 </a>
             </div>
         </div>
 
-        @if (Model == null) 
+        @if (Model == null)
         {
             <div class="empty-state">
                 <div class="empty-state-icon">
-                    <i class="icon-calendar" aria-hidden="true"></i>
+                    <i class="fas fa-bell-slash fa-3x" aria-hidden="true"></i>
                 </div>
                 <h3>No Reminders Found</h3>
                 <p>You don't have any reminders yet. Create your first reminder to get started.</p>
                 <div class="empty-state-action">
                     <a href="/Reminder/CreateReminder" class="btn-primary">
-                        <i class="icon-plus"></i> Create Reminder
+                        <i class="fas fa-plus"></i> Create Reminder
                     </a>
                 </div>
             </div>
@@ -52,30 +51,62 @@
                     (reminder.DueDate - DateTime.UtcNow).TotalHours < 24 ? "urgent" :
                     (reminder.DueDate - DateTime.UtcNow).TotalDays < 7 ? "upcoming" : "normal";
 
+                    <!-- Updated card structure with modern design: dotted border, 8px shadow, status badge, and enhanced layout -->
                     <div class="reminder-card @statusClass">
                         @if (!string.IsNullOrEmpty(reminder.ImageUrl))
                         {
-                            <img src="@reminder.ImageUrl" class="reminder-image" alt="Reminder Image" />
+                            <div class="card-img">
+                                <img src="@reminder.ImageUrl" class="reminder-image" alt="Reminder Image" />
+                            </div>
                         }
-                        <div class="reminder-content">
-                            <h3>@reminder.Title</h3>
-                            <p>@reminder.Description</p>
 
+                        <div class="reminder-content">
+                            <!-- Added status badge with dotted border inspired by pasted-text-2 design -->
+                            <div class="card-status">
+                                @if (statusClass == "urgent")
+                                {
+                                    <span>🔴 Urgent</span>
+                                }
+                                else if (statusClass == "upcoming")
+                                {
+                                    <span>🟠 Upcoming</span>
+                                }
+                                else if (statusClass == "completed")
+                                {
+                                    <span>✅ Completed</span>
+                                }
+                                else if (statusClass == "deleted")
+                                {
+                                    <span>🗑️ Deleted</span>
+                                }
+                                else
+                                {
+                                    <span>🟢 Normal</span>
+                                }
+                            </div>
+
+                            <h3 class="card-title">@reminder.Title</h3>
+                            <p class="card-information">@reminder.Description</p>
+
+                            <!-- Enhanced date styling with gradient backgrounds and icons -->
                             <span class="reminder-date" data-time="@reminder.DueDate.ToLocalTime().ToString("h:mm tt")">
                                 Due: @reminder.DueDate.ToLocalTime().ToString("MMM dd, yyyy")
                             </span>
 
-
-                            <span class="reminder-date">
+                            <span class="reminder-date date-published">
                                 Created: @reminder.DateCreated.ToString("MMM dd, yyyy")
                             </span>
                         </div>
+
                         <div class="reminder-actions">
-                            <a asp-action="ViewReminder" asp-controller="Reminder" asp-route-id="@reminder.Id" class="btn-action view">View</a>
+                            <a asp-action="ViewReminder" asp-controller="Reminder" asp-route-id="@reminder.Id" class="btn-action view">
+                                <i class="fas fa-eye"></i> View
+                            </a>
                         </div>
                     </div>
                 }
             </div>
         }
+
     </div>
 </div>

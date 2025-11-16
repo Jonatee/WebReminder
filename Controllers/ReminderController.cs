@@ -30,7 +30,7 @@ namespace WebReminder.Controllers
         {
             var reminders = await _service.GetAllReminders();
             if (!reminders.Success)
-            {
+            { 
                 TempData["InfoMessage"] = reminders.Message;
                 return View();
             }
